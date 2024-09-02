@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "angularappcmsbbq.client", "angularappcmsbbq.client\angularappcmsbbq.client.esproj", "{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B724715E-3ADF-42D1-9043-E6ADF05ECBEC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4795546-90AE-4900-A7FD-3F27E1AA7138}
+	EndGlobalSection
+EndGlobal

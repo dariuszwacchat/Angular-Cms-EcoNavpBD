@@ -1,0 +1,30 @@
+
+
+
+<div class="db m-10">
+
+    <p class="header">
+        Czy na pewno chcesz usunąć tą pozycję?
+    </p>
+
+    <div class="df-sb bottom-buttons">
+        <div></div>
+
+        <div class="df">
+            <button mat-raised-button color="primary"
+                    mat-dialog-close>
+                No
+            </button>
+            <button mat-raised-button
+                    style="margin-left: 10px;"
+                    color="warn"
+                    (click)="usersService.delete(user.id)"
+                    mat-dialog-close>
+                Yes
+            </button>
+            <mat-spinner diameter="32" *ngIf="usersService.loadingElements" class="spinner"></mat-spinner>
+        </div>
+    </div>
+</div>
+
+

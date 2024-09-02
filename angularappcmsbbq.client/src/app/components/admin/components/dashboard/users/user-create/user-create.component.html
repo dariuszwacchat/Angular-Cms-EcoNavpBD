@@ -1,0 +1,145 @@
+
+
+<div class="db m-10 w-500px" style="margin-bottom: 100px;">
+
+    <p class="header">
+        Dodawanie nowej pozycji?
+    </p>
+    <p class="subHeader">
+        Wypełnij wszystkie pola aby móc dodać nową pozycję
+    </p>
+
+    <div mat-dialog-content>
+        <form [formGroup]="formGroup" class="w-500px db">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="emailRegister" />
+                <mat-icon matSuffix>login</mat-icon>
+            </mat-form-field>
+
+
+            <div class="mb-20">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="passwordRegister" />
+                    <mat-icon matSuffix>password</mat-icon>
+                </mat-form-field>
+                <mat-error *ngIf="formGroup.controls['passwordRegister'].hasError('pattern')" class="matError">
+                    Hasło musi mieć min. 10 znaków i zawierać za równo duże jak i małe litery łącznie z znakami specjalnymi
+                </mat-error>
+            </div>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="roleName">
+                    <mat-option *ngFor="let role of roles" [value]="role.name">
+                        {{ role.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <div class="db">
+                <mat-form-field appearance="outline">
+                    <mat-label>Imie</mat-label>
+                    <input matInput formControlName="imie" />
+                </mat-form-field> 
+            </div>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nazwisko</mat-label>
+                <input matInput formControlName="nazwisko" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Ulica</mat-label>
+                <input matInput formControlName="ulica" />
+            </mat-form-field>
+
+
+            <div class="db">
+                <mat-form-field appearance="outline">
+                    <mat-label>Numer ulicy</mat-label>
+                    <input matInput formControlName="numerUlicy" />
+                </mat-form-field>
+                <mat-error *ngIf="formGroup.controls['numerUlicy'].hasError('pattern')" class="matError">
+                    Pole, które przyjmuje tylko i wyłącznie liczby
+                </mat-error>
+            </div>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>Miejscowość</mat-label>
+                <input matInput formControlName="miejscowosc" />
+            </mat-form-field>
+
+            
+            <div class="db">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Kod pocztowy</mat-label>
+                    <input matInput formControlName="kodPocztowy" />
+                </mat-form-field>
+                <mat-error *ngIf="formGroup.controls['kodPocztowy'].hasError('pattern')" class="matError">
+                    Niepoprawny format kodu pocztowego. Wymagany format to XX-XXX.
+                </mat-error>
+            </div>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>Kraj</mat-label>
+                <input matInput formControlName="kraj" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Data urodzenia</mat-label>
+                <input matInput [matDatepicker]="picker1" formControlName="dataUrodzenia" />
+                <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+
+
+            <div class="db">
+                <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Telefon</mat-label>
+                    <input matInput formControlName="telefon" />
+                </mat-form-field>
+                <mat-error *ngIf="formGroup.controls['telefon'].hasError('pattern')" class="matError">
+                    Prawidłowy format telefonu '125125125'
+                </mat-error>
+            </div>
+
+        </form>
+    </div>
+
+
+    <div class="df-sb bottom-buttons">
+        <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['../../users']">
+            Wstecz
+        </button>
+
+        <div class="df">
+            <button mat-raised-button color="warn" mat-dialog-close class="mr-10" [routerLink]="['../../users']">
+                <mat-icon>cancel</mat-icon>
+                Anuluj
+            </button>
+
+
+            <div class="db centerxy">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="usersService.create(formGroup)"
+                        [disabled]="usersService.isValidCreate(formGroup)"
+                        mat-dialog-close>
+                    <mat-icon>
+                        timer
+                    </mat-icon>
+                    Zapisz
+                </button>
+                <mat-spinner diameter="32" *ngIf="usersService.loadingElements" class="spinner"></mat-spinner>
+            </div>
+
+        </div>
+    </div>
+</div>
+

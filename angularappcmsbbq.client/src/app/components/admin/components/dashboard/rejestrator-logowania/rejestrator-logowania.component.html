@@ -1,0 +1,74 @@
+
+ 
+<!-- dane wyświetlana tylko i wyłącznie dla administratora -->
+<ng-container *ngIf="accountService.role == 'Administrator'">
+
+
+  <div class="df-sb mt-20">
+    <div></div>
+
+    <div>
+      <div class="search-container">
+        <!-- wyszukiwarka -->
+        <mat-form-field appearance="outline" class="w-300px">
+          <mat-label>Wyszukiwarka</mat-label>
+          <input matInput (keyup)="rejestratorLogowaniaService.searchFilter($event)" placeholder="szukana fraza...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
+  <div *ngIf="rejestratorLogowaniaService.rejestratorLogowan.length > 0">
+    <table mat-table [dataSource]="rejestratorLogowaniaService.dataSource" matSort class="mat-elevation-z1">
+
+      <ng-container matColumnDef="lp">
+        <th mat-header-cell *matHeaderCellDef>Lp</th>
+        <td mat-cell *matCellDef="let element; let i = index" class="w-50px">{{ i + 1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataZalogowania">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data zalogowania</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataZalogowania }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dataWylogowania">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Data wylogowania</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataWylogowania }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="userId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+        <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element" class="w-200px">
+
+          <button mat-button [routerLink]="['rejestratorLogowaniaEdit', element.rejestratorLogowaniaId]">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-button (click)="openDialogDelete (element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="rejestratorLogowaniaService.displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: rejestratorLogowaniaService.displayedColumns"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons style="margin: 20px 0px;"></mat-paginator>
+
+
+  </div>
+
+
+</ng-container>
+
+

@@ -1,0 +1,76 @@
+
+
+<div class="pr w-500px">
+
+    <mat-spinner diameter="32" *ngIf="rejestratorLogowania == null" class="mt-20"></mat-spinner>
+
+    <div *ngIf="rejestratorLogowania" class="db">
+
+        <p class="header">
+            Edytowanie pozycji
+        </p>
+        <p class="subHeader">
+            Wprowadź dane, które mają być zmienione
+        </p>
+
+        <div class="db">
+            <h4>{{ rejestratorLogowania.dataZalogowania }}</h4>
+            <h4>{{ rejestratorLogowania.dataWylogowania }}</h4>
+            <h4>{{ rejestratorLogowania.userId }}</h4>
+        </div>
+<!-- 
+        <div mat-dialog-content>
+
+
+            <form [formGroup]="formGroup" class="w-500px db">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Data zalogowania</mat-label>
+                    <input matInput [matDatepicker]="picker1" formControlName="dataZalogowania" />
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Data wylogowania</mat-label>
+                    <input matInput [matDatepicker]="picker2" formControlName="dataWylogowania" />
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+
+
+                <mat-form-field appearance="outline">
+                    <mat-label>User id</mat-label>
+                    <input matInput formControlName="userId" />
+                </mat-form-field>
+
+
+            </form>
+
+        </div>
+ -->
+
+        <div class="df-sb bottom-buttons">
+            <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['../../../rejestratorLogowania']">
+                <mat-icon>cancel</mat-icon>
+                Wstecz
+            </button>
+
+            <div class="db centerxy">
+                <!-- <button mat-raised-button
+                        color="primary"
+                        (click)="rejestratorLogowaniaHandlerService.edit(rejestratorLogowania.rejestratorLogowaniaId,formGroup)"
+                        mat-dialog-close>
+                    <mat-icon>
+                        timer
+                    </mat-icon>
+                    Save
+                </button>
+                <mat-spinner diameter="32" *ngIf="rejestratorLogowaniaHandlerService.loadingElements" class="spinner"></mat-spinner> -->
+            </div>
+
+        </div>
+    </div>
+</div>
+

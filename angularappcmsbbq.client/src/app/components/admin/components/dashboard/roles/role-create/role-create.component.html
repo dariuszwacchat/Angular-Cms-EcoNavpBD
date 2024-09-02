@@ -1,0 +1,51 @@
+
+
+<div class="db w-500px">
+
+    <p class="header">
+        Dodawanie nowej pozycji
+    </p>
+    <p class="subHeader">
+        Wprowadź nazwę aby dodać nową pozycję
+    </p>
+
+    <div mat-dialog-content>
+        <form [formGroup]="formGroup" class="w-500px db">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nazwa</mat-label>
+                <input matInput formControlName="name" />
+            </mat-form-field>
+
+        </form>
+    </div>
+
+
+
+    <div class="df-sb bottom-buttons">
+        <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['../../roles']">
+            Wstecz
+        </button>
+
+
+        <div class="db centerxy">
+            <button mat-raised-button color="warn" mat-dialog-close class="mr-10" [routerLink]="['../../roles']">
+                <mat-icon>cancel</mat-icon>
+                Anuluj
+            </button>
+
+            <button mat-raised-button
+                    color="primary"
+                    (click)="rolesHandlerService.create(formGroup)"
+                    [disabled]="rolesHandlerService.isValidCreate(formGroup)"
+                    mat-dialog-close>
+                <mat-icon>
+                    timer
+                </mat-icon>
+                Zapisz
+            </button>
+            <mat-spinner diameter="32" *ngIf="rolesHandlerService.loadingElements" class="spinner"></mat-spinner>
+        </div>
+         
+    </div>
+</div>

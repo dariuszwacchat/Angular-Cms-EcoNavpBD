@@ -1,0 +1,192 @@
+
+
+<ng-container *ngIf="isLoggedIn">
+    <mat-sidenav-container style="position: absolute; width: 100%; height: 100vh;">
+
+        <mat-sidenav #sidenav mode="over" [opened]="isSidenavOpen">
+
+            <div style="display: flex; flex-direction: column; width: 220px; padding-top: 55px;">
+
+                <mat-action-list class="menuList">
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['roles']" (click)="sidenav.toggle(); getLinkName('roles')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">roles</span>
+                        </div>
+                    </button>
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['users']" (click)="sidenav.toggle(); getLinkName('users')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">peoples</mat-icon>
+                            <span class="menu-item">users</span>
+                        </div>
+                    </button>
+
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['marki']" (click)="sidenav.toggle(); getLinkName('marki')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">marki</span>
+                        </div>
+                    </button>
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['products']" (click)="sidenav.toggle(); getLinkName('products')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">products</span>
+                        </div>
+                    </button>
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['categories']" (click)="sidenav.toggle(); getLinkName('categories')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">categories</span>
+                        </div>
+                    </button>
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['subcategories']" (click)="sidenav.toggle(); getLinkName('subcategories')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">subcategories</span>
+                        </div>
+                    </button>
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['subsubcategories']" (click)="sidenav.toggle(); getLinkName('subsubcategories')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">subsubcategories</span>
+                        </div>
+                    </button>
+
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['rejestratorLogowania']" (click)="sidenav.toggle(); getLinkName('rejestratorLogowania')">
+                        <div class="df">
+                            <mat-icon class="menu-icon">table</mat-icon>
+                            <span class="menu-item">rejestrator logowania</span>
+                        </div>
+                    </button>
+
+                </mat-action-list>
+
+            </div>
+        </mat-sidenav>
+
+
+
+        <mat-sidenav-content style="position: absolute; align-items: start; justify-content: start; width: 100%;">
+            <div class="display: flex; flex-direction: column;">
+
+                <mat-toolbar>
+                    <mat-toolbar-row class="toolBarRow">
+
+                        <div class="df-sb w-100">
+
+                            <div class="df">
+                                <button mat-icon-button (click)="sidenav.toggle()">
+                                    <mat-icon>
+                                        menu
+                                    </mat-icon>
+                                </button>
+                                <div class="centery fs-15 ml-50">localHost: <span class="b">{{ linkName }}</span></div>
+                            </div>
+
+
+                            <div clss="df centery account" style="font-size: 12px; display: flex; align-items: center; justify-content: center;">
+                                <mat-icon>people</mat-icon>
+
+
+                                <div class="ml-10 mr-10">zalogowany użytkownik: <span class="b">{{ zalogowanyUserEmail }} </span></div>
+
+
+                                <button mat-icon-button color="primary" [matMenuTriggerFor]="account">
+                                    <mat-icon>
+                                        settings
+                                    </mat-icon>
+                                </button>
+
+                                <mat-menu #account="matMenu" class="menuButtons">
+
+                                    <button *ngIf="role == 'Administrator'" mat-menu-item routerLink="update">
+                                        <mat-icon>update</mat-icon>
+                                        Aktualizuj dane
+                                    </button>
+
+                                    <button *ngIf="role == 'Administrator'" mat-menu-item routerLink="changePassword">
+                                        <mat-icon>update</mat-icon>
+                                        Zmień hasło
+                                    </button>
+
+                                    <button mat-menu-item (click)="accountHandlerService.wyloguj ()">
+                                        <mat-icon>logout</mat-icon>
+                                        wyloguj
+                                    </button>
+
+                                </mat-menu>
+
+
+                            </div>
+                        </div>
+
+
+
+                    </mat-toolbar-row>
+                </mat-toolbar>
+
+
+                <div style="margin: auto 120px;">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </mat-sidenav-content>
+
+
+
+
+    </mat-sidenav-container>
+</ng-container> 
+
+
+
+
+
+
+
+
+
+  
+<ng-container *ngIf="!isLoggedIn">
+    <div style="width: 100%; height: 90vh; display: flex; align-items: center; justify-content: center;">
+        <div style="width: 500px;">
+
+            <h2>{{ password }} </h2>
+
+
+            <form [formGroup]="formGroupLogin" class="db m-20">
+                <mat-form-field appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="emailLogin" />
+                    <mat-icon matSuffix>email</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="passwordLogin" />
+                    <mat-icon matSuffix>password</mat-icon>
+                </mat-form-field>
+
+                <div class="pr centerx">
+                    <button mat-raised-button
+                            color="primary"
+                            (click)="login(formGroupLogin)"
+                            [disabled]="accountHandlerService.asTouchedDirtyLogin (formGroupLogin)">
+                        <mat-icon>login</mat-icon>
+                        Login
+                    </button>
+                    <mat-spinner diameter="32" *ngIf="logowanie" class="p"></mat-spinner>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</ng-container>
+ 

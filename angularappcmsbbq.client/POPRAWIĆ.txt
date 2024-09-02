@@ -1,0 +1,17 @@
+
+Co poprawić?
+
+- poprawić komunikację z bazą danych, ponieważ program "gubi" połączenie i aby to naprawić trzeba się
+  wylogować i zalogować jeszcze raz
+
+- sprawdzić formularze
+
+- program niewylogowywuje automatycznie, gdy wystąpi np awaria, potem dane przechowywane w pamięci
+
+- informacja na temat błędów powinna być zwracana dopiero wtedy gdy użytkownik, admin jest zalogowany, bo to nieładnie wygląda
+
+- kiedy powrócę na konto po ok 2 godzinach administratora spowrotem to w pamięci sessionStorage zostają wpisy,
+  jak urchonić się przed tym?
+
+
+-- AccountHandlerService nie może zwracać komunikacót o błędach na zewnątrz - dopracować to.

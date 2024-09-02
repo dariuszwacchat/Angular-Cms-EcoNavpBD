@@ -1,0 +1,54 @@
+
+
+<div class="pr w-500px">
+
+    <mat-spinner diameter="32" *ngIf="role == null" class="mt-20"></mat-spinner>
+
+    <div *ngIf="role" class="db">
+
+        <p class="header">
+            Edytowanie pozycji
+        </p>
+        <p class="subHeader">
+            Wprowadź dane, które mają być zmienione
+        </p>
+
+        <div mat-dialog-content>
+            <form [formGroup]="formGroup" class="w-500px db">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Name</mat-label>
+                    <input matInput placeholder="name" formControlName="name" />
+                </mat-form-field>
+
+            </form>
+        </div>
+
+        <div class="df-sb bottom-buttons">
+            <div>
+                <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['../../../roles']" class="mr-10">
+                    <mat-icon>cancel</mat-icon>
+                    Wstecz
+                </button>
+            </div>
+
+
+            <div class="db centerxy">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="rolesServiceHandler.edit(role,formGroup)"
+                        [disabled]="rolesServiceHandler.isValidEdit(formGroup)"
+                        mat-dialog-close>
+                    <mat-icon>
+                        timer
+                    </mat-icon>
+                    Save
+                </button>
+                <mat-spinner diameter="32" *ngIf="rolesServiceHandler.loadingElements" class="spinner"></mat-spinner>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

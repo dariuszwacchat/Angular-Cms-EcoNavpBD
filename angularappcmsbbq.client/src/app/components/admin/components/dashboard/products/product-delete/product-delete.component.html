@@ -1,0 +1,29 @@
+
+
+
+<div style="display: flex; flex-direction: column; padding: 10px;">
+
+    <p class="header">
+        Czy na pewno chcesz usunąć tą pozycję?
+    </p>
+
+    <div class="df-sb bottom-buttons">
+        <div></div>
+
+        <div class="df">
+            <button mat-raised-button color="primary"
+                    mat-dialog-close>
+                No
+            </button>
+            <button mat-raised-button
+                    style="margin-left: 10px;"
+                    color="warn"
+                    (click)="productsService.delete(product.productId)"
+                    mat-dialog-close>
+                Yes
+            </button>
+            <mat-spinner diameter="32" *ngIf="productsService.loadingElements" class="spinner"></mat-spinner>
+        </div>
+    </div>
+</div>
+

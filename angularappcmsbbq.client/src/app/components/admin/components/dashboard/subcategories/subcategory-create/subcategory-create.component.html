@@ -1,0 +1,70 @@
+
+
+
+<div class="db w-500px">
+
+    <p class="header">
+        Dodawanie nowej pozycji
+    </p>
+    <p class="subHeader">
+        Wprowadź nazwę aby dodać nową pozycję
+    </p>
+
+    <div mat-dialog-content>
+        <form [formGroup]="formGroup" class="w-500px db">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nazwa</mat-label>
+                <input matInput formControlName="name" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Pełna nazwa</mat-label>
+                <input matInput formControlName="fullName" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="categoryId">
+                    <mat-option *ngFor="let category of categories" [value]="category.categoryId">
+                        {{ category.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </form>
+    </div>
+
+
+
+    <div class="df-sb bottom-buttons">
+        <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['../../subcategories']">
+            Wstecz
+        </button>
+
+
+        <div class="df">
+            <button mat-raised-button color="warn" mat-dialog-close class="mr-10" [routerLink]="['../../subcategories']">
+                <mat-icon>cancel</mat-icon>
+                Anuluj
+            </button>
+
+            <div class="db centerxy">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="subcategoriesService.create(formGroup)"
+                        [disabled]="subcategoriesService.isValidCreate(formGroup)"
+                        mat-dialog-close>
+                    <mat-icon>
+                        timer
+                    </mat-icon>
+                    Zapisz
+                </button>
+                <mat-spinner diameter="32" *ngIf="subcategoriesService.loadingElements" class="spinner"></mat-spinner>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

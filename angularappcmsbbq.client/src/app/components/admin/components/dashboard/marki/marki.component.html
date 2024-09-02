@@ -1,0 +1,79 @@
+
+
+<!-- dane wyświetlana tylko i wyłącznie dla administratora -->
+<ng-container *ngIf="accountService.role == 'Administrator'">
+
+
+  <div class="df-sb mt-20">
+    <!-- button dodawania -->
+    <button mat-raised-button color="primary" [routerLink]="['markaCreate']">
+      <mat-icon>add</mat-icon>
+      Create new
+    </button>
+
+
+    <div>
+      <div class="search-container">
+        <!-- wyszukiwarka -->
+        <mat-form-field appearance="outline" class="w-300px">
+          <mat-label>Wyszukiwarka</mat-label>
+          <input matInput (keyup)="markiService.searchFilter($event)" placeholder="szukana fraza...">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
+  <div *ngIf="markiService.marki.length > 0">
+        
+    <table mat-table [dataSource]="markiService.dataSource" matSort class="mat-elevation-z1">
+
+      <ng-container matColumnDef="lp">
+        <th mat-header-cell *matHeaderCellDef>Lp</th>
+        <td mat-cell *matCellDef="let element; let i = index" class="w-50px">{{ i + 1 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="categoryId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>categoryId</th>
+        <td mat-cell *matCellDef="let element">{{ element.categoryId }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Full name</th>
+        <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element" class="w-200px">
+
+          <button mat-button [routerLink]="['markaEdit', element.markaId]">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-button (click)="openDialogDelete (element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="markiService.displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: markiService.displayedColumns"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons style="margin: 20px 0px;"></mat-paginator>
+
+    </div>
+
+
+
+</ng-container>
+
+

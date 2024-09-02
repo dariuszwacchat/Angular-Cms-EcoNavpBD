@@ -1,0 +1,10 @@
+subcategories
+
+{{ subcategories.length }}
+
+<div class="db" *ngFor="let subcategory of subcategories">
+    <button mat-flat-button color="accent" [routerLink]="[categoryName, subcategory.name]">
+        {{ subcategory.name }}
+    </button>
+    <app-subsubcategories-nav [subcategoryId]="subcategory.subcategoryId" [categoryName]="categoryName" [subcategoryName]="subcategory.name"></app-subsubcategories-nav>
+</div>

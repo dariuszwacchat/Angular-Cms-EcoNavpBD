@@ -1,0 +1,12 @@
+
+
+<div class="df">
+    <div class="df" *ngFor="let category of categories">
+        <button mat-raised-button color="primary" [routerLink]="[category.name]">
+            {{ category.name }}
+        </button>
+        <app-subcategories-nav [categoryId]="category.categoryId" [categoryName]="category.name"></app-subcategories-nav>
+    </div>
+    <button mat-raised-button [routerLink]="['/admin']">admin</button>
+</div>
+

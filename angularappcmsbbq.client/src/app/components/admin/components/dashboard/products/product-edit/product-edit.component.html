@@ -1,0 +1,113 @@
+
+
+<div class="pr w-500px">
+
+    <mat-spinner diameter="32" *ngIf="product == null" class="mt-20"></mat-spinner>
+
+    <div *ngIf="product" class="db">
+
+        <p class="header">
+            Edytowanie pozycji
+        </p>
+        <p class="subHeader">
+            Wprowadź dane, które mają być zmienione
+        </p>
+
+        <div mat-dialog-content>
+            <form [formGroup]="formGroup" class="w-500px db">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Nazwa</mat-label>
+                    <input matInput formControlName="name" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Opis</mat-label>
+                    <input matInput formControlName="description" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Cena</mat-label>
+                    <input matInput formControlName="price" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Ilość</mat-label>
+                    <input matInput formControlName="quantity" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Rozmiar</mat-label>
+                    <input matInput formControlName="rozmiar" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Kolor</mat-label>
+                    <input matInput formControlName="kolor" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Marka</mat-label>
+                    <mat-select formControlName="markaId">
+                        <mat-option *ngFor="let marka of marki" [value]="marka.markaId">
+                            {{ marka.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Category</mat-label>
+                    <mat-select formControlName="categoryId" (selectionChange)="onSelectionChangeCategory($event)">
+                        <mat-option *ngFor="let category of categories" [value]="category.categoryId">
+                            {{ category.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Subcategory</mat-label>
+                    <mat-select formControlName="subcategoryId">
+                        <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.subcategoryId">
+                            {{ subcategory.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Subsubategory</mat-label>
+                    <mat-select formControlName="subsubcategoryId">
+                        <mat-option *ngFor="let subsubcategory of subsubcategories" [value]="subsubcategory.subsubcategoryId">
+                            {{ subsubcategory.name }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+            </form>
+        </div>
+
+        <div class="df-sb bottom-buttons">
+            <div>
+                <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['../../../products']" class="mr-10">
+                    <mat-icon>cancel</mat-icon>
+                    Wstecz
+                </button>
+            </div>
+
+            <div class="db centerxy">
+                <button mat-raised-button
+                        color="primary"
+                        (click)="productsHandlerService.edit(product.productId,formGroup)"
+                        [disabled]="productsHandlerService.isValidEdit(formGroup)"
+                        mat-dialog-close>
+                    <mat-icon>
+                        timer
+                    </mat-icon>
+                    Save
+                </button>
+                <mat-spinner diameter="32" *ngIf="productsHandlerService.loadingElements" class="spinner"></mat-spinner>
+            </div>
+
+        </div>
+    </div>
+</div>
+
