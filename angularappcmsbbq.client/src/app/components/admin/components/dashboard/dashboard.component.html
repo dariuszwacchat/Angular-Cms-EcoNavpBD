@@ -5,11 +5,11 @@
 
         <mat-sidenav #sidenav mode="over" [opened]="isSidenavOpen">
 
-            <div style="display: flex; flex-direction: column; width: 220px; padding-top: 55px;">
+            <div style="display: flex; flex-direction: column; padding: 50px 10px 10px 10px;">
 
                 <mat-action-list class="menuList">
 
-                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['roles']" (click)="sidenav.toggle(); getLinkName('roles')">
+                    <button *ngIf="role == 'Administrator'" mat-list-item [routerLink]="['roles']" (click)="sidenav.toggle(); getLinkName('roles')" style="margin-bottom: 2px;">
                         <div class="df">
                             <mat-icon class="menu-icon">table</mat-icon>
                             <span class="menu-item">roles</span>

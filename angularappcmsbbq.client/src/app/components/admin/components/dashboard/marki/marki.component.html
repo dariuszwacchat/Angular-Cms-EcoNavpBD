@@ -27,7 +27,7 @@
 
   <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
   <div *ngIf="markiService.marki.length > 0">
-        
+
       <table mat-table [dataSource]="markiService.dataSource" matSort class="mat-elevation-z1 table">
 
           <ng-container matColumnDef="lp">
@@ -68,9 +68,9 @@
           <tr mat-row *matRowDef="let row; columns: markiService.displayedColumns"></tr>
       </table>
 
-    <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons style="margin: 20px 0px;"></mat-paginator>
+      <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
 
-    </div>
+  </div>
 
 
 

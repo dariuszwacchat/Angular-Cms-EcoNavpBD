@@ -3919,16 +3919,13 @@ ul {
   border-collapse: collapse;
 }
 
-  .table th {
+  .table thead th {
     background-color: transparent;
     padding: 15px 5px;
     color: black;
     text-align: left;
-  }
-
-  .table thead th {
-      border-bottom: 2px solid white;
-  }
+    border-bottom: 2px solid white;
+  } 
 
   .table tbody td {
     background-color: rgb(240,240,230);
@@ -3938,6 +3935,18 @@ ul {
   }
 
 
+
+
+/* Left navigation ----------------------------------------------------------------------------------- */
+
+.menuList { 
+}
+
+.menuList button {
+    padding-left: 30px; 
+    margin-bottom: 2px;  
+    border-radius: 30px;
+}
 
 
 
