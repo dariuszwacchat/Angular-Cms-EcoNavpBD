@@ -47,16 +47,16 @@ export class SubsubcategoriesHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.subsubcategoriesService.getAll().subscribe({
-      next: ((n: TaskResult<Subsubcategory[]>) => {
-        if (n.success) {
+      next: ((result: TaskResult<Subsubcategory[]>) => {
+        if (result.success) {
           // pobranie danych
-          this.dataSource.data = n.model;
-          this.subsubcategories = n.model;
+          this.dataSource.data = result.model;
+          this.subsubcategories = result.model;
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
@@ -72,16 +72,16 @@ export class SubsubcategoriesHandlerService {
   public get(id: any): void {
     this.loadingElements = true;
     this.subsubcategoriesService.get(id).subscribe({
-      next: ((n: TaskResult<Subsubcategory>) => {
-        if (n.success) {
+      next: ((result: TaskResult<Subsubcategory>) => {
+        if (result.success) {
           // pobranie danych
-          this.subsubcategory = n.model as Subsubcategory;
+          this.subsubcategory = result.model as Subsubcategory;
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
           this.loadingElements = false;
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'get')}. Name: ${error.name}. Message: ${error.message}`);
@@ -108,18 +108,18 @@ export class SubsubcategoriesHandlerService {
 
     this.loadingElements = true;
     this.subsubcategoriesService.create(subsubcategory).subscribe({
-      next: ((n: TaskResult<Subsubcategory>) => {
-        if (n.success) {
+      next: ((result: TaskResult<Subsubcategory>) => {
+        if (result.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
           this.loadingElements = false;
           form.reset();
           form.markAllAsTouched();
         } else {
-          this.snackBarService.setSnackBar(n.message);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
           this.loadingElements = false;
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
@@ -146,16 +146,16 @@ export class SubsubcategoriesHandlerService {
 
     this.loadingElements = true;
     this.subsubcategoriesService.edit(id, subsubcategory).subscribe({
-      next: ((s: TaskResult<Subsubcategory>) => {
-        if (s.success) {
+      next: ((result: TaskResult<Subsubcategory>) => {
+        if (result.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(s.message);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
           this.loadingElements = false;
         }
-        return s;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
@@ -171,16 +171,16 @@ export class SubsubcategoriesHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.subsubcategoriesService.delete(id).subscribe({
-      next: ((s: TaskResult<Subsubcategory>) => {
-        if (s.success) {
+      next: ((result: TaskResult<Subsubcategory>) => {
+        if (result.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(s.message);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
           this.loadingElements = false;
         }
-        return s;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);

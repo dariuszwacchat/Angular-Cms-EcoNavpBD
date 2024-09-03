@@ -19,8 +19,8 @@ export class SubcategoriesNavComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.subcategoriesService.getAllByCategoryId(this.categoryId).subscribe((n: TaskResult<Subcategory[]>) => {
-      this.subcategories = n.model;
+    this.subcategoriesService.getAllByCategoryId(this.categoryId).subscribe((result: TaskResult<Subcategory[]>) => {
+      this.subcategories = result.model as Subcategory[];
     });
 
      

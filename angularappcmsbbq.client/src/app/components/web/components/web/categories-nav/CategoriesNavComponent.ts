@@ -21,8 +21,8 @@ export class CategoriesNavComponent implements OnInit {
 
     ngOnInit(): void {
         this.categories$ = this.categoriesService.getAll();
-        this.categories$.subscribe((n: TaskResult<Category[]>) => {
-            this.categories = n.model;
+        this.categories$.subscribe((result: TaskResult<Category[]>) => {
+          this.categories = result.model;
         });
     }
 

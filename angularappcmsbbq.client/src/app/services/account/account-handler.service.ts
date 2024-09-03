@@ -152,19 +152,19 @@ export class AccountHandlerService {
 
     this.zapisywanie = true;
     this.accountService.updateAccount(user).subscribe({
-      next: ((n: TaskResult<ApplicationUser>) => {
-        if (n.success) {
+      next: ((result: TaskResult<ApplicationUser>) => {
+        if (result.success) {
           this.snackBarService.setSnackBar(`Konto zostało zaktualizowane`);
           //this.router.navigate(['/users']);
           this.logowanie = false;
           this.zapisywanie = false;
         } else {
-          this.snackBarService.setSnackBar(`${n.message}`);
+          this.snackBarService.setSnackBar(`${result.message}`);
           sessionStorage.removeItem('userToken');
           this.zapisywanie = false;
         }
 
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'updateAccount')}. Name: ${error.name}. Message: ${error.message}`);

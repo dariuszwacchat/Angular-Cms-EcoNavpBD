@@ -43,14 +43,14 @@ export class UserCreateComponent implements OnInit {
 
     // pobranie ról i wyświetlenie ich w comboBoxie
     this.roleService.getAll().subscribe({
-      next: ((n: TaskResult<ApplicationRole[]>) => {
-        if (n.success) {
+      next: ((result: TaskResult<ApplicationRole[]>) => {
+        if (result.success) {
           // pobranie danych
-          this.roles = n.model as ApplicationRole [];
+          this.roles = result.model as ApplicationRole [];
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);

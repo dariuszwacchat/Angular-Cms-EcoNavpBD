@@ -47,16 +47,16 @@ export class UsersHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.usersService.getAll().subscribe({
-      next: ((n: TaskResult<ApplicationUser[]>) => {
-        if (n.success) {
+      next: ((result: TaskResult<ApplicationUser[]>) => {
+        if (result.success) {
           // pobranie danych
-          this.dataSource.data = n.model as ApplicationUser[];
-          this.users = n.model as ApplicationUser[];
+          this.dataSource.data = result.model as ApplicationUser[];
+          this.users = result.model as ApplicationUser[];
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UsersHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
@@ -69,15 +69,15 @@ export class UsersHandlerService {
   public getUserByEmail(email: string): ApplicationUser {
     this.loadingElements = true;
     this.usersService.getUserByEmail(email).subscribe({
-      next: ((n: TaskResult<ApplicationUser>) => {
-        if (n.success) {
-          this.user = n.model as ApplicationUser;
+      next: ((result: TaskResult<ApplicationUser>) => {
+        if (result.success) {
+          this.user = result.model as ApplicationUser;
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(`Użytkownik nie został załadowany. ${n.message}`);
+          this.snackBarService.setSnackBar(`Użytkownik nie został załadowany. ${result.message}`);
           this.loadingElements = false;
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UsersHandlerService', 'getUserByEmail')}. Name: ${error.name}. Message: ${error.message}`);
@@ -129,17 +129,17 @@ export class UsersHandlerService {
 
     this.loadingElements = true;
     this.usersService.create (registerViewModel).subscribe({
-      next: ((n: TaskResult<RegisterViewModel>) => {
-        if (n.success) {
+      next: ((result: TaskResult<RegisterViewModel>) => {
+        if (result.success) {
           this.snackBarService.setSnackBar('Zarejestrowano nowego użytkownika');
           this.loadingElements = false;
           form.reset();
           form.markAllAsTouched();
         } else {
-          this.snackBarService.setSnackBar(`Uzytkownik nie został zarejestrowany. ${n.message}`);
+          this.snackBarService.setSnackBar(`Uzytkownik nie został zarejestrowany. ${result.message}`);
           this.loadingElements = false;
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UsersHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
@@ -181,17 +181,17 @@ export class UsersHandlerService {
 
     this.loadingElements = true;
     this.usersService.edit(id, user).subscribe({
-      next: ((n: TaskResult<ApplicationUser>) => {
-        if (n.success) {
+      next: ((result: TaskResult<ApplicationUser>) => {
+        if (result.success) {
           this.snackBarService.setSnackBar(`Konto zostało zaktualizowane`);
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(`${n.message}`);
+          this.snackBarService.setSnackBar(`Konto nie zostało zaktualizowane. ${result.message}`);
           sessionStorage.removeItem('userToken');
           this.loadingElements = false;
         }
 
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UsersHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
@@ -208,16 +208,16 @@ export class UsersHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.usersService.delete(id).subscribe({
-      next: ((n: TaskResult<boolean>) => {
-        if (n.success) {
+      next: ((result: TaskResult<boolean>) => {
+        if (result.success) {
           this.getAll ();
           this.snackBarService.setSnackBar(`Usunięto`);
           this.loadingElements = false;
         } else {
-          this.snackBarService.setSnackBar(`${n.message}`);
+          this.snackBarService.setSnackBar(`${result.message}`);
           this.loadingElements = false;
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UsersHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);

@@ -40,10 +40,10 @@ export class SubcategoryEditComponent implements OnInit {
       if (id) {
 
         this.subcategoriesService.get(id).subscribe({
-          next: ((n: TaskResult<Subcategory>) => {
-            if (n.success) { 
+          next: ((result: TaskResult<Subcategory>) => {
+            if (result.success) { 
 
-              this.subcategory = n.model as Subcategory;
+              this.subcategory = result.model as Subcategory;
               if (this.subcategory) {
 
 
@@ -55,9 +55,9 @@ export class SubcategoryEditComponent implements OnInit {
               }
 
             } else {
-              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
             }
-            return n;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoryEditComponent', 'get')}. Name: ${error.name}. Message: ${error.message}`);
@@ -68,15 +68,15 @@ export class SubcategoryEditComponent implements OnInit {
 
 
         this.categoriesService.getAll().subscribe({
-          next: ((n: TaskResult<Category[]>) => {
-            if (n.success) {
+          next: ((result: TaskResult<Category[]>) => {
+            if (result.success) {
               // pobranie danych
-              let data = n.model as Category[];
+              let data = result.model as Category[];
               this.categories = data.sort((a, b) => a.name.localeCompare(b.name));
             } else {
-              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
             }
-            return n;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoryEditComponent', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);

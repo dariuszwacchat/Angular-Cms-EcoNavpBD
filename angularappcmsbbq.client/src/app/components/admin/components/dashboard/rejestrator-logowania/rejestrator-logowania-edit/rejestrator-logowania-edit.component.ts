@@ -15,6 +15,9 @@ import { InfoService } from '../../../../../../services/InfoService';
 })
 export class RejestratorLogowaniaEditComponent implements OnInit {
 
+  formGroup!: FormGroup;
+  rejestratorLogowania !: RejestratorLogowania;
+
   constructor(
     private fb: FormBuilder,
     public rejestratorLogowaniaService: RejestratorLogowaniaService,
@@ -32,10 +35,10 @@ export class RejestratorLogowaniaEditComponent implements OnInit {
          
 
         this.rejestratorLogowaniaService.get(id).subscribe({
-          next: ((n: TaskResult<RejestratorLogowania>) => {
-            if (n.success) {
+          next: ((result: TaskResult<RejestratorLogowania>) => {
+            if (result.success) {
 
-              this.rejestratorLogowania = n.model as RejestratorLogowania;
+              this.rejestratorLogowania = result.model as RejestratorLogowania;
               if (this.rejestratorLogowania) {
 
                 let dataZalogowania = new Date(this.rejestratorLogowania.dataZalogowania);
@@ -50,9 +53,9 @@ export class RejestratorLogowaniaEditComponent implements OnInit {
               }
 
             } else {
-              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
             }
-            return n;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RejestratorLogowaniaEditComponent', 'get')}. Name: ${error.name}. Message: ${error.message}`);
@@ -63,8 +66,6 @@ export class RejestratorLogowaniaEditComponent implements OnInit {
     });
   }
 
-  formGroup!: FormGroup;
-  rejestratorLogowania !: RejestratorLogowania;
 
 
 }

@@ -14,6 +14,9 @@ import { InfoService } from '../../../../../../services/InfoService';
   styleUrl: './role-edit.component.css'
 })
 export class RoleEditComponent implements OnInit {
+  
+  formGroup!: FormGroup;
+  role !: ApplicationRole;
 
   constructor(
     private fb: FormBuilder,
@@ -30,12 +33,11 @@ export class RoleEditComponent implements OnInit {
       let id = params.get('id');
       if (id) {
 
-
         this.rolesService.get(id).subscribe({
-          next: ((n: TaskResult<ApplicationRole>) => {
-            if (n.success) {
+          next: ((result: TaskResult<ApplicationRole>) => {
+            if (result.success) {
 
-              this.role = n.model as ApplicationRole;
+              this.role = result.model as ApplicationRole;
               if (this.role) {
                 this.formGroup = this.fb.group({
                   name: [this.role.name, [Validators.required, Validators.minLength(3)]]
@@ -43,9 +45,9 @@ export class RoleEditComponent implements OnInit {
               }
 
             } else {
-              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
             }
-            return n;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RoleEditComponent', 'get')}. Name: ${error.name}. Message: ${error.message}`);
@@ -55,11 +57,6 @@ export class RoleEditComponent implements OnInit {
       }
     });
   }
-
-
-
-  formGroup!: FormGroup;
-  role !: ApplicationRole;
 
 
 }

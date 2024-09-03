@@ -13,6 +13,9 @@ import { SnackBarService } from '../../../../../../services/snack-bar.service';
 })
 export class SubcategoryCreateComponent implements OnInit {
 
+  formGroup !: FormGroup;
+  categories: Category[] = [];
+
   constructor(
     private fb: FormBuilder,
     private categoriesService: CategoriesService,
@@ -23,16 +26,16 @@ export class SubcategoryCreateComponent implements OnInit {
   ngOnInit(): void { 
 
     this.categoriesService.getAll().subscribe({
-      next: ((n: TaskResult<Category[]>) => {
-        if (n.success) {
+      next: ((result: TaskResult<Category[]>) => {
+        if (result.success) {
           // pobranie danych
-          this.categories = n.model as Category[];
+          this.categories = result.model as Category[];
           this.categories = this.categories.sort((a, b) => a.name.localeCompare(b.name));
 
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
@@ -48,8 +51,5 @@ export class SubcategoryCreateComponent implements OnInit {
 
     this.formGroup.markAllAsTouched();
   }
-
-  formGroup !: FormGroup;
-  categories: Category[] = [];
 
 }

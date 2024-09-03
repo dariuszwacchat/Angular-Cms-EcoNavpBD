@@ -55,16 +55,16 @@ export class SubsubcategoryCreateComponent implements OnInit {
 
   getAllCategories(): void {
     this.categoriesService.getAll().subscribe({
-      next: ((n: TaskResult<Category[]>) => {
-        if (n.success) {
+      next: ((result: TaskResult<Category[]>) => {
+        if (result.success) {
           // pobranie danych
-          let data = (n.model as Category[]);
+          let data = (result.model as Category[]);
           this.categories = data.sort((a, b) => a.name.localeCompare(b.name)); 
 
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`); 
@@ -75,10 +75,10 @@ export class SubsubcategoryCreateComponent implements OnInit {
 
   getAllSubcategories(categoryId: string): void {
     this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
-      next: ((n: TaskResult<Subcategory[]>) => {
-        if (n.success) {
+      next: ((result: TaskResult<Subcategory[]>) => {
+        if (result.success) {
           // pobranie danych
-          let data = n.model as Subcategory[];
+          let data = result.model as Subcategory[];
           this.subcategories = data.sort((a, b) => a.name.localeCompare(b.name));
 
           if (this.subcategories.length > 0) {
@@ -87,9 +87,9 @@ export class SubsubcategoryCreateComponent implements OnInit {
             this.formGroup.controls['subcategoryId'].disable();
           }
         } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
-        return n;
+        return result;
       }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`); 

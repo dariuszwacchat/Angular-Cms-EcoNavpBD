@@ -21,10 +21,10 @@ export class SubsubcategoriesNavComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.subsubcategoriesService.getAll().subscribe((n: TaskResult<Subsubcategory[]>) => {
-      for (var i = 0; i < n.model.length; i++) {
-        if (n.model[i].subcategoryId === this.subcategoryId) {
-          this.subsubcategories.push(n.model[i]);
+    this.subsubcategoriesService.getAll().subscribe((result: TaskResult<Subsubcategory[]>) => {
+      for (var i = 0; i < result.model.length; i++) {
+        if (result.model[i].subcategoryId === this.subcategoryId) {
+          this.subsubcategories.push(result.model[i]);
         }
       }
     });
