@@ -62,7 +62,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Marka</mat-label>
                     <mat-select formControlName="markaId">
-                        <mat-option *ngFor="let marka of marki" [value]="marka.name">
+                        <mat-option *ngFor="let marka of marki" [value]="marka.markaId">
                             {{ marka.name }}
                         </mat-option>
                     </mat-select>
@@ -76,7 +76,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Category</mat-label>
                     <mat-select formControlName="categoryId" (selectionChange)="onSelectionChangeCategory($event)">
-                        <mat-option *ngFor="let category of categories" [value]="category.name">
+                        <mat-option *ngFor="let category of categories" [value]="category.categoryId">
                             {{ category.name }}
                         </mat-option>
                     </mat-select>
@@ -90,7 +90,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Subcategory</mat-label>
                     <mat-select formControlName="subcategoryId" (selectionChange)="onSelectionChangeSubcategory($event)">
-                        <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.name">
+                        <mat-option *ngFor="let subcategory of subcategories" [value]="subcategory.subcategoryId">
                             {{ subcategory.name }}
                         </mat-option>
                     </mat-select>
@@ -106,7 +106,7 @@
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Subsubategory</mat-label>
                     <mat-select formControlName="subsubcategoryId">
-                        <mat-option *ngFor="let subsubcategory of subsubcategories" [value]="subsubcategory.name">
+                        <mat-option *ngFor="let subsubcategory of subsubcategories" [value]="subsubcategory.subsubcategoryId">
                             {{ subsubcategory.name }}
                         </mat-option>
                     </mat-select>

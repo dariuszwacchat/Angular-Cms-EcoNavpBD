@@ -16,10 +16,6 @@ import { Subsubcategory } from '../../../../../../models/subsubcategory';
 import { SnackBarService } from '../../../../../../services/snack-bar.service';
 import { InfoService } from '../../../../../../services/InfoService';
 import { map, Observable, startWith } from 'rxjs';
-import { MarkiHandlerService } from '../../../../../../services/marki/marki-handler.service';
-import { CategoriesHandlerService } from '../../../../../../services/categories/categories-handler.service';
-import { SubcategoriesHandlerService } from '../../../../../../services/subcategories/subcategories-handler.service';
-import { SubsubcategoriesHandlerService } from '../../../../../../services/subsubcategories/subsubcategories-handler.service';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
@@ -47,13 +43,9 @@ export class ProductEditComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private markiService: MarkiService,
-    private markiHandlerService: MarkiHandlerService,
     private categoriesService: CategoriesService,
-    private categoriesHandlerService: CategoriesHandlerService,
     private subcategoriesService: SubcategoriesService,
-    private subcategoriesHandlerService: SubcategoriesHandlerService,
     private subsubcategoriesService: SubsubcategoriesService,
-    private subsubcategoriesHandlerService: SubsubcategoriesHandlerService,
     private productsService: ProductsService,
     public productsHandlerService: ProductsHandlerService,
     private route: ActivatedRoute,
@@ -80,16 +72,6 @@ export class ProductEditComponent implements OnInit {
                 let categoryId = this.product.categoryId == null ? '' : this.product.categoryId;
                 let subcategoryId = this.product.subcategoryId == null ? '' : this.product.subcategoryId;
                 let subsubcategoryId = this.product.subsubcategoryId == null ? '' : this.product.subsubcategoryId;
-
-                // wyszukanie poszczególnych obiektów
-                let marka = this.markiHandlerService.marki.find(f => f.markaId == markaId);
-                let category = this.categoriesHandlerService.categories.find(f => f.categoryId == categoryId);
-                let subcategory = this.subcategoriesHandlerService.subcategories.find(f => f.subcategoryId == subcategoryId);
-                let subsubcategory = this.subsubcategoriesHandlerService.subsubcategories.find(f => f.subsubcategoryId == subsubcategoryId);
-
-                let categoryName = category?.name;
-                let subcategoryName = subcategory?.name;
-                let subsubcategoryName = subsubcategory?.name;
 
 
                 this.getAllMarki();
@@ -131,7 +113,7 @@ export class ProductEditComponent implements OnInit {
 
   getAllMarki(): void {
     this.markiService.getAll().subscribe({
-      next: (n: TaskResult<Marka[]>) => {
+      next: ((n: TaskResult<Marka[]>) => {
         if (n.success) {
           this.marki = n.model as Marka[];
 
@@ -139,7 +121,7 @@ export class ProductEditComponent implements OnInit {
           this.snackBarService.setSnackBar(`${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }
@@ -150,22 +132,23 @@ export class ProductEditComponent implements OnInit {
 
   getAllCategories(): void {
     this.categoriesService.getAll().subscribe({
-      next: (n: TaskResult<Category[]>) => {
+      next: ((n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
           this.categories = n.model as Category[];
 
-          /*if (this.categories.length > 0) {
+          if (this.categories.length > 0) {
             this.formGroup.controls['categoryId'].enable();
           } else {
             this.formGroup.controls['categoryId'].disable();
-          }*/
+          }
+
 
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }
@@ -175,12 +158,12 @@ export class ProductEditComponent implements OnInit {
 
   getAllSubcategories(categoryId: string): void {
     this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
-      next: (n: TaskResult<Subcategory[]>) => {
+      next: ((n: TaskResult<Subcategory[]>) => {
         if (n.success) {
           // pobranie danych
           this.subcategories = n.model as Subcategory[];
 
-/*
+
           // włącza lub wyłącza kontrolkę subcategoryId
           if (this.subcategories.length > 0) {
             this.formGroup.controls['subcategoryId'].enable();
@@ -193,14 +176,14 @@ export class ProductEditComponent implements OnInit {
             this.formGroup.controls['subsubcategoryId'].enable();
           } else {
             this.formGroup.controls['subsubcategoryId'].disable();
-          }*/
+          }
 
 
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }
@@ -210,23 +193,24 @@ export class ProductEditComponent implements OnInit {
 
   getAllSubsubcategories(categoryId: string, subcategoryId: string): void {
     this.subsubcategoriesService.getAllByCategoryIdAndSubcategoryId(categoryId, subcategoryId).subscribe({
-      next: (result: TaskResult<Subsubcategory[]>) => {
+      next: ((result: TaskResult<Subsubcategory[]>) => {
         if (result.success) {
 
           this.subsubcategories = result.model as Subsubcategory[];
-/*
+
           // włącza lub wyłącza kontrolkę subsubcategoryId
           if (this.subsubcategories.length > 0) {
             this.formGroup.controls['subsubcategoryId'].enable();
           } else {
             this.formGroup.controls['subsubcategoryId'].disable();
-          }*/
+          }
+
 
         } else {
           this.snackBarService.setSnackBar(`${result.message}`);
         }
         return result;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }
@@ -236,21 +220,22 @@ export class ProductEditComponent implements OnInit {
 
 
   onSelectionChangeCategory(event: MatSelectChange): void {
-    let category = this.categories.find(f => f.name === event.value);
+    let category = this.categories.find(f => f.categoryId === event.value);
     if (category != null) {
       this.getAllSubcategories(category.categoryId);
-/*
+
       // przypisanie wartości począktowych do drugiego comboBoxa 
       this.formGroup.controls['subcategoryId'].setValue('');
 
       // przypisanie wartości począktowych do trzeciego comboBoxa
       this.subsubcategories = [];
-      this.formGroup.controls['subsubcategoryId'].setValue('');*/
+      this.formGroup.controls['subsubcategoryId'].setValue('');
     }
   }
+   
 
   onSelectionChangeSubcategory(event: MatSelectChange): void {
-    let subcategory = this.subcategories.find(f => f.name === event.value);
+    let subcategory = this.subcategories.find(f => f.subcategoryId === event.value);
     if (subcategory != null) {
       this.categoryId = subcategory.categoryId == null ? "" : subcategory.categoryId;
       this.subcategoryId = subcategory.subcategoryId;

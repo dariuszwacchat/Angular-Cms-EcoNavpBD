@@ -34,11 +34,6 @@ export class ProductsHandlerService {
 
   constructor( 
     private productsService: ProductsService,
-    private markiService: MarkiHandlerService,
-    private categoriesService: CategoriesHandlerService,
-    private subcategoriesService: SubcategoriesHandlerService,
-    private subsubcategoriesService: SubsubcategoriesHandlerService,
-    private router: Router,
     private snackBarService: SnackBarService
   ) {
     this.getAll();
@@ -103,22 +98,9 @@ export class ProductsHandlerService {
   }
    
 
-  public create(form: FormGroup): void {
+  public create(form: FormGroup): void { 
 
-    // pobranie nazw kategorii z comboBoxow
-    let markaName = form.controls['markaId'].value;
-    let categoryName = form.controls['categoryId'].value;
-    let subcategoryName = form.controls['subcategoryId'].value;
-    let subsubcategoryName = form.controls['subsubcategoryId'].value;
-
-    // wyszukanie poszczególnych obiektów
-    let marka = this.markiService.marki.find(f => f.name == markaName);
-    let category = this.categoriesService.categories.find(f => f.name == categoryName);
-    let subcategory = this.subcategoriesService.subcategories.find(f => f.name == subcategoryName);
-    let subsubcategory = this.subsubcategoriesService.subsubcategories.find(f => f.name == subsubcategoryName);
-    
-    let data = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`; 
-
+    let data = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
 
     let product: Product = {
       productId: GuidGenerator.newGuid().toString(),
@@ -131,12 +113,11 @@ export class ProductsHandlerService {
       iloscOdwiedzin: 0,
       dataDodania: data,
       userId: '2bd20f99-1a37-4e3b-bfe4-ebad38422e6e',
-      markaId: marka?.markaId,
-      categoryId: category?.categoryId,
-      subcategoryId: subcategory?.subcategoryId,
-      subsubcategoryId: subsubcategory?.subsubcategoryId
+      markaId: form.controls['markaId'].value,
+      categoryId: form.controls['categoryId'].value,
+      subcategoryId: form.controls['subcategoryId'].value,
+      subsubcategoryId: form.controls['subsubcategoryId'].value
     };
-
 
     this.loadingElements = true;
     this.productsService.create(product).subscribe({
@@ -167,20 +148,7 @@ export class ProductsHandlerService {
 
 
   public edit(id: string, form: FormGroup): void {
-
-    // pobranie nazw kategorii z comboBoxow
-    let markaName = form.controls['markaId'].value;
-    let categoryName = form.controls['categoryId'].value;
-    let subcategoryName = form.controls['subcategoryId'].value;
-    let subsubcategoryName = form.controls['subsubcategoryId'].value;
-
-    // wyszukanie poszczególnych obiektów
-    let marka = this.markiService.marki.find(f => f.name == markaName);
-    let category = this.categoriesService.categories.find(f => f.name == categoryName);
-    let subcategory = this.subcategoriesService.subcategories.find(f => f.name == subcategoryName);
-    let subsubcategory = this.subsubcategoriesService.subsubcategories.find(f => f.name == subsubcategoryName);
-
-
+ 
     let product: Product = {
       productId: id,
       name: form.controls['name'].value,
@@ -192,10 +160,10 @@ export class ProductsHandlerService {
       dataDodania: (new Date()).toString(),
       iloscOdwiedzin: 0,
       userId: '2bd20f99-1a37-4e3b-bfe4-ebad38422e6e',
-      markaId: marka?.markaId,
-      categoryId: category?.categoryId,
-      subcategoryId: subcategory?.subcategoryId,
-      subsubcategoryId: subsubcategory?.subsubcategoryId,
+      markaId: form.controls['markaId'].value,
+      categoryId: form.controls['categoryId'].value,
+      subcategoryId: form.controls['subcategoryId'].value,
+      subsubcategoryId: form.controls['subsubcategoryId'].value,
     };
 
     this.loadingElements = true;

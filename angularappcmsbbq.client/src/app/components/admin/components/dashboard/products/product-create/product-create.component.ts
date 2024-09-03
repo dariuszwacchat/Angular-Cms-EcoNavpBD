@@ -177,7 +177,7 @@ export class ProductCreateComponent implements OnInit {
   
 
   onSelectionChangeCategory(event: MatSelectChange): void {
-    let category = this.categories.find(f => f.name === event.value);
+    let category = this.categories.find(f => f.categoryId === event.value);
     if (category != null) {
       this.getAllSubcategories(category.categoryId);
 
@@ -192,7 +192,7 @@ export class ProductCreateComponent implements OnInit {
 
 
   onSelectionChangeSubcategory(event: MatSelectChange): void {
-    let subcategory = this.subcategories.find(f => f.name === event.value);
+    let subcategory = this.subcategories.find(f => f.subcategoryId === event.value);
     if (subcategory != null) { 
       this.categoryId = subcategory.categoryId == null ? "" : subcategory.categoryId;
       this.subcategoryId = subcategory.subcategoryId;
