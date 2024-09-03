@@ -14,14 +14,14 @@ export class AccountService {
   api: string = 'https://localhost:44328/api/account';
 
 
-  getAllUsers(): Observable<any> {
+  /*getAllUsers(): Observable<any> {
     return this.http.get<any>(`${this.api}/getUsers`);
-  }
+  }*/
 
 
-  getUserById(userId: string): Observable<any> {
+  /*getUserById(userId: string): Observable<any> {
     return this.http.get<any>(`${this.api}/getUserById/${userId}`);
-  }
+  }*/
 
 
   getUserByEmail(email: string): Observable<any> {

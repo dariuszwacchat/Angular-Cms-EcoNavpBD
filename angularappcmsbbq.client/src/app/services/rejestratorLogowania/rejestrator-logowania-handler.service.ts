@@ -46,7 +46,7 @@ export class RejestratorLogowaniaHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.rejestratorLogowaniaService.getAll().subscribe({
-      next: (n: TaskResult<RejestratorLogowania[]>) => {
+      next: ((n: TaskResult<RejestratorLogowania[]>) => {
         if (n.success) {
           // pobranie danych
           this.dataSource.data = n.model as RejestratorLogowania[];
@@ -56,7 +56,7 @@ export class RejestratorLogowaniaHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RejestratorLogowaniaHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -69,7 +69,7 @@ export class RejestratorLogowaniaHandlerService {
   public get(id: any): void {
     this.loadingElements = true;
     this.rejestratorLogowaniaService.get(id).subscribe({
-      next: (n: TaskResult<RejestratorLogowania>) => {
+      next: ((n: TaskResult<RejestratorLogowania>) => {
         if (n.success) {
           // pobranie danych
           this.rejestratorLogowania = n.model as RejestratorLogowania;
@@ -79,7 +79,7 @@ export class RejestratorLogowaniaHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RejestratorLogowaniaHandlerService', 'get')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -101,7 +101,7 @@ export class RejestratorLogowaniaHandlerService {
 
     this.loadingElements = true;
     this.rejestratorLogowaniaService.edit(id, marka).subscribe({
-      next: (n: TaskResult<RejestratorLogowania>) => {
+      next: ((n: TaskResult<RejestratorLogowania>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -111,7 +111,7 @@ export class RejestratorLogowaniaHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RejestratorLogowaniaHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -126,7 +126,7 @@ export class RejestratorLogowaniaHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.rejestratorLogowaniaService.delete(id).subscribe({
-      next: (n: TaskResult<RejestratorLogowania>) => {
+      next: ((n: TaskResult<RejestratorLogowania>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -136,7 +136,7 @@ export class RejestratorLogowaniaHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RejestratorLogowaniaHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;

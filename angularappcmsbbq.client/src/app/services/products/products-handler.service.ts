@@ -54,7 +54,7 @@ export class ProductsHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.productsService.getAll().subscribe({
-      next: (n: TaskResult<Product[]>) => {
+      next: ((n: TaskResult<Product[]>) => {
         if (n.success) {
           // pobranie danych
           this.dataSource.data = n.model as Product[];
@@ -65,7 +65,7 @@ export class ProductsHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('ProductsHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -79,7 +79,7 @@ export class ProductsHandlerService {
   public get(id: any): void {
     this.loadingElements = true;
     this.productsService.get(id).subscribe({
-      next: (n: TaskResult<Product>) => {
+      next: ((n: TaskResult<Product>) => {
         if (n.success) {
           // pobranie danych
           this.product = n.model as Product;
@@ -89,7 +89,7 @@ export class ProductsHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('ProductsHandlerService', 'get')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -121,7 +121,7 @@ export class ProductsHandlerService {
 
     this.loadingElements = true;
     this.productsService.create(product).subscribe({
-      next: (n: TaskResult<Product>) => {
+      next: ((n: TaskResult<Product>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
@@ -134,7 +134,7 @@ export class ProductsHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('ProductsHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -168,7 +168,7 @@ export class ProductsHandlerService {
 
     this.loadingElements = true;
     this.productsService.edit(id, product).subscribe({
-      next: (n: TaskResult<Product>) => {
+      next: ((n: TaskResult<Product>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -178,7 +178,7 @@ export class ProductsHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('ProductsHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -192,7 +192,7 @@ export class ProductsHandlerService {
   public delete(productId: string): void {
     this.loadingElements = true;
     this.productsService.delete(productId).subscribe({
-      next: (s: TaskResult<Product>) => {
+      next: ((s: TaskResult<Product>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -202,7 +202,7 @@ export class ProductsHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('ProductsHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;

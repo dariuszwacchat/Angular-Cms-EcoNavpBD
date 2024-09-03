@@ -105,7 +105,7 @@ export class SubsubcategoryEditComponent implements OnInit {
 
   getAllCategories(): void {
     this.categoriesService.getAll().subscribe({
-      next: (n: TaskResult<Category[]>) => {
+      next: ((n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
           let data = n.model as Category[];
@@ -121,7 +121,7 @@ export class SubsubcategoryEditComponent implements OnInit {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }
@@ -131,7 +131,7 @@ export class SubsubcategoryEditComponent implements OnInit {
 
   getAllSubcategories(categoryId: string): void {
     this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
-      next: (n: TaskResult<Subcategory[]>) => {
+      next: ((n: TaskResult<Subcategory[]>) => {
         if (n.success) {
           // pobranie danych
           let data = n.model as Subcategory[];
@@ -157,7 +157,7 @@ export class SubsubcategoryEditComponent implements OnInit {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }

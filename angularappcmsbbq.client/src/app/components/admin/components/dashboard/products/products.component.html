@@ -31,7 +31,7 @@
   <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
   <div *ngIf="productsService.products.length > 0">
 
-    <table mat-table [dataSource]="productsService.dataSource" matSort class="mat-elevation-z1">
+    <table mat-table [dataSource]="productsService.dataSource" matSort class="mat-elevation-z1 table">
 
       <ng-container matColumnDef="lp">
         <th mat-header-cell *matHeaderCellDef>Lp</th>

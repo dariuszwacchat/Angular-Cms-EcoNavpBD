@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../../../../../services/account/account.service';
 import { AccountHandlerService } from '../../../../../../services/account/account-handler.service';
 import { RolesService } from '../../../../../../services/roles/roles.service';
-import { ActivatedRoute } from '@angular/router';
 import { TaskResult } from '../../../../../../models/taskResult';
 import { ApplicationUser } from '../../../../../../models/applicationUser';
 import { ApplicationRole } from '../../../../../../models/applicationRole';
 import { SnackBarService } from '../../../../../../services/snack-bar.service';
+import { InfoService } from '../../../../../../services/InfoService';
 
 @Component({
   selector: 'app-update',
@@ -15,6 +15,11 @@ import { SnackBarService } from '../../../../../../services/snack-bar.service';
   styleUrl: './update.component.css'
 })
 export class UpdateComponent implements OnInit {
+
+
+  formGroup!: FormGroup;
+  user !: ApplicationUser;
+  roles: ApplicationRole[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -27,15 +32,33 @@ export class UpdateComponent implements OnInit {
 
   ngOnInit(): void {
 
+
     const sessionModel = sessionStorage.getItem('sessionModel') || '';
     if (sessionModel) {
       let sm = JSON.parse(sessionModel);
       let email = sm.model.email;
 
-      this.accountService.getUserByEmail(email).subscribe((s: TaskResult<ApplicationUser>) => {
+      // pobranie zalogowanego użytkownika poprzez email
+      this.getUserByEmail(email);
 
-        if (s.success) {
-          this.user = s.model;
+      // pobranie ról i wyświetlenie ich w comboBoxie
+      this.getAllRoles();
+    }
+  }
+
+  loadedData !: boolean;
+
+  // Pobiera użytkownika poprzez email
+  getUserByEmail(email: string): void {
+
+    // ładowanie danych zanim zostaną wyświetlone
+    this.loadedData = false;
+    this.accountService.getUserByEmail(email).subscribe({
+      next: ((result: TaskResult<ApplicationUser>) => {
+
+        if (result.success) {
+
+          this.user = result.model as ApplicationUser;
 
           this.formGroup = this.fb.group({
             email: [this.user.email, [Validators.required]],
@@ -50,34 +73,40 @@ export class UpdateComponent implements OnInit {
             telefon: [this.user.telefon, [Validators.required, Validators.pattern(/^\d+$/)]],
             roleId: [this.user.roleId, [Validators.required]],
           });
+
+          // emaila nie można zmienić
           this.formGroup.controls['email'].disable();
-
         } else {
-          this.snackBarService.setSnackBar(s.message);
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
         }
 
-
-      });
-       
-
-      // pobranie ról i wyświetlenie ich w comboBoxie
-      this.roleService.getAll().subscribe({
-        next: (n: TaskResult<ApplicationRole[]>) => {
-          if (n.success) {
-            this.roles = n.model;
-          } else {
-            this.snackBarService.setSnackBar(n.message);
-          }
-          return n;
-        }
-      });
-
-    }
+        return result;
+      }),
+      error: (error: Error) => {
+        this.loadedData = true;
+        this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'register')}. Name: ${error.name}. Message: ${error.message}`);
+      }
+    });
   }
 
 
-  formGroup!: FormGroup;
-  user !: ApplicationUser;
-  roles: ApplicationRole[] = [];
+  // Wyświetla wszystkie role
+  getAllRoles(): void {
+    this.roleService.getAll().subscribe({
+      next: ((result: TaskResult<ApplicationRole[]>) => {
+        if (result.success) {
+          this.roles = result.model as ApplicationRole[];
+        } else {
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
+        }
+        return result;
+      }),
+      error: (error: Error) => {
+        this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'register')}. Name: ${error.name}. Message: ${error.message}`);
+      }
+    });
+  }
+
+
 }
 

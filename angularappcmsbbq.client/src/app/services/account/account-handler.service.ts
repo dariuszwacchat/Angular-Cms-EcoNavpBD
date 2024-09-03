@@ -7,9 +7,9 @@ import { ApplicationUser } from '../../models/applicationUser';
 import { FormGroup } from '@angular/forms';
 import { TaskResult } from '../../models/taskResult';
 import { RegisterViewModel } from '../../models/registerViewModel';
-import { Guid } from 'guid-typescript';
 import { GuidGenerator } from '../guid-generator';
 import { InfoService } from '../InfoService';
+import { ChangePasswordViewModel } from '../../models/changePasswordViewModel';
 
 @Injectable({
   providedIn: 'root'
@@ -34,17 +34,33 @@ export class AccountHandlerService {
 
     
 
-
+  // Pobiera użytkownika poprzez email
   public getUserByEmail(email: string): ApplicationUser {
-    this.accountService.getUserByEmail(email).subscribe((s: TaskResult<ApplicationUser>) => {
-      this.user = s.model;
+
+    this.accountService.getUserByEmail(email).subscribe({
+      next: ((result: TaskResult<ApplicationUser>) => {
+        if (result.success) {
+
+          this.user = result.model as ApplicationUser;            
+
+        } else {
+          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
+        }
+
+        return result;
+      }),
+      error: (error: Error) => {
+        this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'register')}. Name: ${error.name}. Message: ${error.message}`);
+      }
     });
+
     return this.user;
   }
 
+   
 
 
-
+  // rejestrowanie nowego użytkownika
   public register(form: FormGroup): void {
 
     let email = form.controls['emailRegister'].value;
@@ -83,17 +99,17 @@ export class AccountHandlerService {
 
     this.rejestrowanie = true;
     this.accountService.register(registerViewModel).subscribe({
-      next: (r: TaskResult<RegisterViewModel>) => {
-        if (r.success) {
+      next: ((result: TaskResult<RegisterViewModel>) => {
+        if (result.success) {
           this.snackBarService.setSnackBar('Zarejestrowano nowego użytkownika');
           this.rejestrowanie = false;
           form.reset();
         } else {
-          this.snackBarService.setSnackBar(`Uzytkownik nie został zarejestrowany. ${r.message}`);
+          this.snackBarService.setSnackBar(`Uzytkownik nie został zarejestrowany. ${result.message}`);
           this.rejestrowanie = false;
         }
-        return r;
-      },
+        return result;
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'register')}. Name: ${error.name}. Message: ${error.message}`);
         this.rejestrowanie = false;
@@ -104,7 +120,7 @@ export class AccountHandlerService {
    
 
 
-
+  // Aktualizowanie konta zalogowanego użytkownika, który jest administratorem
   public updateAccount(ob: ApplicationUser, form: FormGroup): void {
 
     let email = form.controls['email'].value;
@@ -136,7 +152,7 @@ export class AccountHandlerService {
 
     this.zapisywanie = true;
     this.accountService.updateAccount(user).subscribe({
-      next: (n: TaskResult<ApplicationUser>) => {
+      next: ((n: TaskResult<ApplicationUser>) => {
         if (n.success) {
           this.snackBarService.setSnackBar(`Konto zostało zaktualizowane`);
           //this.router.navigate(['/users']);
@@ -149,7 +165,7 @@ export class AccountHandlerService {
         }
 
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'updateAccount')}. Name: ${error.name}. Message: ${error.message}`);
         this.zapisywanie = false;
@@ -207,33 +223,41 @@ export class AccountHandlerService {
 
 
   public changePassword(form: FormGroup): void {
-    /*this.zalogowanyUser = this.getUserByEmail(this.zalogowanyUserEmail);
 
-    let changePasswordViewModel: ChangePasswordViewModel = {
-      email: this.zalogowanyUserEmail,
-      oldPassword: form.controls['oldPassword'].value,
-      newPassword: form.controls['newPassword'].value
-    };
+    // pobranie danych użytkownika z sesji
+    const sessionModel = sessionStorage.getItem('sessionModel') || '';
+    if (sessionModel) {
+      let sm = JSON.parse(sessionModel);
+      let email = sm.model.email;
 
-    this.zapisywanie = true;
-    this.accountService.changePassword(changePasswordViewModel).subscribe({
-      next: (n: TaskResult<ChangePasswordViewModel>) => {
-        if (n.success) {
-          this.snackBarService.setSnackBar(`Hasło zostało poprawnie zmienione`);
-          form.reset();
-          this.zapisywanie = false;
-        } else {
-          this.snackBarService.setSnackBar(n.message);
-          form.reset();
-          this.zapisywanie = false;
-        }
-        return n;
-      },
-      error: (error: Error) => {
-        this.snackBarService.setSnackBar(`${error.message}`);
-        this.zapisywanie = false;
+      if (email.length > 0) {
+        let changePasswordViewModel: ChangePasswordViewModel = {
+          email: email,
+          oldPassword: form.controls['oldPassword'].value,
+          newPassword: form.controls['newPassword'].value
+        };
+
+        this.zapisywanie = true;
+        this.accountService.changePassword(changePasswordViewModel).subscribe({
+          next: ((result: TaskResult<ChangePasswordViewModel>) => {
+            if (result.success) {
+              this.snackBarService.setSnackBar(`Hasło zostało poprawnie zmienione`);
+              form.reset();
+              this.zapisywanie = false;
+            } else {
+              this.snackBarService.setSnackBar(`Hasło nie zostało zmienione. ${result.message}`);
+              form.reset();
+              this.zapisywanie = false;
+            }
+            return result;
+          }),
+          error: (error: Error) => {
+            this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'changePassword')}. Name: ${error.name}. Message: ${error.message}`);
+            this.zapisywanie = false;
+          }
+        });
       }
-    }); */
+    }
   }
 
 
@@ -381,8 +405,8 @@ export class AccountHandlerService {
       form.controls['ulica'].valid &&
       form.controls['numerUlicy'].valid &&
       form.controls['miejscowosc'].valid &&
-      form.controls['kraj'].valid &&
       form.controls['kodPocztowy'].valid &&
+      form.controls['kraj'].valid &&
       form.controls['dataUrodzenia'].valid &&
       form.controls['roleId'].valid 
     ) {

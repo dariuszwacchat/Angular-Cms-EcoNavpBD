@@ -51,7 +51,7 @@ export class SubcategoriesHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.subcategoriesService.getAll().subscribe({
-      next: (n: TaskResult<Subcategory[]>) => {
+      next: ((n: TaskResult<Subcategory[]>) => {
         if (n.success) {
           // pobranie danych
           this.subcategories = n.model;
@@ -61,7 +61,7 @@ export class SubcategoriesHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoriesHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -120,7 +120,7 @@ export class SubcategoriesHandlerService {
   public get(id: any): void {
     this.loadingElements = true;
     this.subcategoriesService.get(id).subscribe({
-      next: (n: TaskResult<Subcategory>) => {
+      next: ((n: TaskResult<Subcategory>) => {
         if (n.success) {
           // pobranie danych
           this.subcategory = n.model as Subcategory;
@@ -130,7 +130,7 @@ export class SubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoriesHandlerService', 'get')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -153,7 +153,7 @@ export class SubcategoriesHandlerService {
 
     this.loadingElements = true;
     this.subcategoriesService.create(subcategory).subscribe({
-      next: (n: TaskResult<Subcategory>) => {
+      next: ((n: TaskResult<Subcategory>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
@@ -165,7 +165,7 @@ export class SubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoriesHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -190,7 +190,7 @@ export class SubcategoriesHandlerService {
 
     this.loadingElements = true;
     this.subcategoriesService.edit(id, subcategory).subscribe({
-      next: (s: TaskResult<Subcategory>) => {
+      next: ((s: TaskResult<Subcategory>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -200,7 +200,7 @@ export class SubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoriesHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -215,7 +215,7 @@ export class SubcategoriesHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.subcategoriesService.delete(id).subscribe({
-      next: (s: TaskResult<Subcategory>) => {
+      next: ((s: TaskResult<Subcategory>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -225,7 +225,7 @@ export class SubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoriesHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;

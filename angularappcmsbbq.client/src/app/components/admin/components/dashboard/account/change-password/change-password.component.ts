@@ -9,6 +9,8 @@ import { AccountHandlerService } from '../../../../../../services/account/accoun
 })
 export class ChangePasswordComponent implements OnInit {
 
+  formGroup !: FormGroup;
+
   constructor(
     private fb: FormBuilder,
     public accountService: AccountHandlerService
@@ -23,6 +25,5 @@ export class ChangePasswordComponent implements OnInit {
     this.formGroup.markAllAsTouched();
   }
 
-  formGroup !: FormGroup;
 
 }

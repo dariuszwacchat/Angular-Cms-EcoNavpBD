@@ -47,7 +47,7 @@ export class SubsubcategoriesHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.subsubcategoriesService.getAll().subscribe({
-      next: (n: TaskResult<Subsubcategory[]>) => {
+      next: ((n: TaskResult<Subsubcategory[]>) => {
         if (n.success) {
           // pobranie danych
           this.dataSource.data = n.model;
@@ -57,7 +57,7 @@ export class SubsubcategoriesHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -72,7 +72,7 @@ export class SubsubcategoriesHandlerService {
   public get(id: any): void {
     this.loadingElements = true;
     this.subsubcategoriesService.get(id).subscribe({
-      next: (n: TaskResult<Subsubcategory>) => {
+      next: ((n: TaskResult<Subsubcategory>) => {
         if (n.success) {
           // pobranie danych
           this.subsubcategory = n.model as Subsubcategory;
@@ -82,7 +82,7 @@ export class SubsubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'get')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -108,7 +108,7 @@ export class SubsubcategoriesHandlerService {
 
     this.loadingElements = true;
     this.subsubcategoriesService.create(subsubcategory).subscribe({
-      next: (n: TaskResult<Subsubcategory>) => {
+      next: ((n: TaskResult<Subsubcategory>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
@@ -120,7 +120,7 @@ export class SubsubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -146,7 +146,7 @@ export class SubsubcategoriesHandlerService {
 
     this.loadingElements = true;
     this.subsubcategoriesService.edit(id, subsubcategory).subscribe({
-      next: (s: TaskResult<Subsubcategory>) => {
+      next: ((s: TaskResult<Subsubcategory>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -156,7 +156,7 @@ export class SubsubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -171,7 +171,7 @@ export class SubsubcategoriesHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.subsubcategoriesService.delete(id).subscribe({
-      next: (s: TaskResult<Subsubcategory>) => {
+      next: ((s: TaskResult<Subsubcategory>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -181,7 +181,7 @@ export class SubsubcategoriesHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoriesHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;

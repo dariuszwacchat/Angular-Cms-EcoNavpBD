@@ -47,7 +47,7 @@ export class CategoriesHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.categoriesService.getAll().subscribe({
-      next: (n: TaskResult<Category[]>) => {
+      next: ((n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
           this.categories = n.model;
@@ -57,7 +57,7 @@ export class CategoriesHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('CategoriesHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -69,7 +69,7 @@ export class CategoriesHandlerService {
 
   public get(id: string): Category { 
     this.categoriesService.get(id).subscribe({
-      next: (n: TaskResult<Category>) => {
+      next: ((n: TaskResult<Category>) => {
         if (n.success) {
           // pobranie danych
           this.category = n.model as Category;
@@ -77,7 +77,7 @@ export class CategoriesHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('CategoriesHandlerService', 'get')}. Name: ${error.name}. Message: ${error.message}`);
       }
@@ -101,7 +101,7 @@ export class CategoriesHandlerService {
 
     this.loadingElements = true;
     this.categoriesService.create(category).subscribe({
-      next: (n: TaskResult<Category>) => {
+      next: ((n: TaskResult<Category>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
@@ -113,7 +113,7 @@ export class CategoriesHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('CategoriesHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -140,7 +140,7 @@ export class CategoriesHandlerService {
 
       this.loadingElements = true;
       this.categoriesService.edit(ob.categoryId, category).subscribe({
-        next: (s: TaskResult<Category>) => {
+        next: ((s: TaskResult<Category>) => {
           if (s.success) {
             this.getAll();
             this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -150,7 +150,7 @@ export class CategoriesHandlerService {
             this.loadingElements = false;
           }
           return s;
-        },
+        }),
         error: (error: Error) => {
           this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('CategoriesHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
           this.loadingElements = false;
@@ -167,7 +167,7 @@ export class CategoriesHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.categoriesService.delete(id).subscribe({
-      next: (s: TaskResult<Category>) => {
+      next: ((s: TaskResult<Category>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -177,7 +177,7 @@ export class CategoriesHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('CategoriesHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;

@@ -47,7 +47,7 @@ export class MarkiHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.markiService.getAll().subscribe({
-      next: (n: TaskResult<Marka[]>) => {
+      next: ((n: TaskResult<Marka[]>) => {
         if (n.success) {
           // pobranie danych
           this.marki = n.model;
@@ -57,7 +57,7 @@ export class MarkiHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('MarkiHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -97,7 +97,7 @@ export class MarkiHandlerService {
 
     this.loadingElements = true;
     this.markiService.create(marka).subscribe({
-      next: (s: TaskResult<Marka>) => {
+      next: ((s: TaskResult<Marka>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
@@ -109,7 +109,7 @@ export class MarkiHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('MarkiHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -131,7 +131,7 @@ export class MarkiHandlerService {
 
     this.loadingElements = true;
     this.markiService.edit(id, marka).subscribe({
-      next: (s: TaskResult<Marka>) => {
+      next: ((s: TaskResult<Marka>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -141,7 +141,7 @@ export class MarkiHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('MarkiHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -156,7 +156,7 @@ export class MarkiHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.markiService.delete(id).subscribe({
-      next: (s: TaskResult<Marka>) => {
+      next: ((s: TaskResult<Marka>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -166,7 +166,7 @@ export class MarkiHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('MarkiHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;

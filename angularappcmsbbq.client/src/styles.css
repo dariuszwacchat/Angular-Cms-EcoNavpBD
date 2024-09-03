@@ -8,7 +8,7 @@ html, body {
   margin: 0px;
   padding: 0px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  background-color: rgb(245,245,245);
+  background-color: rgb(240,240,240);
 }
  
 
@@ -3902,6 +3902,41 @@ ul {
 .d-n {
   display: none;
 }
+
+
+
+
+
+
+/* Table ----------------------------------------------------------------------------------- */
+
+
+.table {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+
+  .table th {
+    background-color: transparent;
+    padding: 15px 5px;
+    color: black;
+    text-align: left;
+  }
+
+  .table thead th {
+      border-bottom: 2px solid white;
+  }
+
+  .table tbody td {
+    background-color: rgb(240,240,230);
+    margin: 0px;
+    padding: 5px;
+    border-bottom: 1px solid white;
+  }
+
 
 
 

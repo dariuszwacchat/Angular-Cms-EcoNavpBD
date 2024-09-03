@@ -47,7 +47,7 @@ export class RolesHandlerService {
   public getAll(): void {
     this.loadingElements = true;
     this.rolesService.getAll().subscribe({
-      next: (n: TaskResult<ApplicationRole[]>) => {
+      next: ((n: TaskResult<ApplicationRole[]>) => {
         if (n.success) {
           // pobranie danych
           this.dataSource.data = n.model;
@@ -62,7 +62,7 @@ export class RolesHandlerService {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RolesHandlerService', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -89,7 +89,7 @@ export class RolesHandlerService {
 
     this.loadingElements = true;
     this.rolesService.create(role).subscribe({
-      next: (n: TaskResult<ApplicationRole>) => {
+      next: ((n: TaskResult<ApplicationRole>) => {
         if (n.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Nowa pozycja została dodana');
@@ -101,7 +101,7 @@ export class RolesHandlerService {
           this.loadingElements = false;
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RolesHandlerService', 'create')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
@@ -125,7 +125,7 @@ export class RolesHandlerService {
 
       this.loadingElements = true;
       this.rolesService.edit(ob.id, role).subscribe({
-        next: (s: TaskResult<ApplicationRole>) => {
+        next: ((s: TaskResult<ApplicationRole>) => {
           if (s.success) {
             this.getAll();
             this.snackBarService.setSnackBar('Nowa pozycja została zaktualizowana');
@@ -135,7 +135,7 @@ export class RolesHandlerService {
             this.loadingElements = false;
           }
           return s;
-        },
+        }),
         error: (error: Error) => {
           this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RolesHandlerService', 'edit')}. Name: ${error.name}. Message: ${error.message}`);
           this.loadingElements = false;
@@ -152,7 +152,7 @@ export class RolesHandlerService {
   public delete(id: string): void {
     this.loadingElements = true;
     this.rolesService.delete(id).subscribe({
-      next: (s: TaskResult<ApplicationRole>) => {
+      next: ((s: TaskResult<ApplicationRole>) => {
         if (s.success) {
           this.getAll();
           this.snackBarService.setSnackBar('Pozycja zostsała usunięta');
@@ -162,7 +162,7 @@ export class RolesHandlerService {
           this.loadingElements = false;
         }
         return s;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('RolesHandlerService', 'delete')}. Name: ${error.name}. Message: ${error.message}`);
         this.loadingElements = false;
