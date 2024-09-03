@@ -35,7 +35,8 @@ export class ProductEditComponent implements OnInit {
   filteredCategories!: Observable<Category[]>;
   filteredSubcategories!: Observable<Subcategory[]>;
   filteredSubsubcategories!: Observable<Subsubcategory[]>;
-  categoryId: string = '';
+
+  categoryId!: string | undefined;
   subcategoryId: string = '';
 
   categoryName: string = '';
@@ -70,29 +71,36 @@ export class ProductEditComponent implements OnInit {
                 // załadowanie danych do comboBoxów
                 let markaId = this.product.markaId == null ? '' : this.product.markaId;
                 let categoryId = this.product.categoryId == null ? '' : this.product.categoryId;
-                let subcategoryId = this.product.subcategoryId == null ? '' : this.product.subcategoryId;
-                let subsubcategoryId = this.product.subsubcategoryId == null ? '' : this.product.subsubcategoryId;
+
+                if (categoryId.length > 0) {
+                   
+                  let subcategoryId = this.product.subcategoryId == null ? '' : this.product.subcategoryId;;
+                  let subsubcategoryId = this.product.subsubcategoryId == null ? '' : this.product.subsubcategoryId;
+                   
+
+                  this.getAllMarki();
+                  this.getAllCategories();                  
+                  this.getAllSubcategories(categoryId);
+
+                  if (subsubcategoryId.length > 0) {
+                    this.getAllSubsubcategories(categoryId, subcategoryId);
+                  }
 
 
-                this.getAllMarki();
-                this.getAllCategories();
-                this.getAllSubcategories(categoryId);
-                this.getAllSubsubcategories(categoryId, subcategoryId);
-                 
 
-                this.formGroup = this.fb.group({
-                  name: [this.product.name, [Validators.required, Validators.minLength(2)]],
-                  description: [this.product.description, [Validators.required]],
-                  price: [this.product.price, [Validators.required, Validators.pattern(/^\d+(,\d+)?$/)]],
-                  quantity: [this.product.quantity, [Validators.required, Validators.pattern(/^\d+$/)]],
-                  rozmiar: [this.product.rozmiar, [Validators.required]],
-                  kolor: [this.product.kolor, [Validators.required]],
-                  markaId: [markaId, [Validators.required]],
-                  categoryId: [categoryId, [Validators.required]],
-                  subcategoryId: [subcategoryId, [Validators.required]],
-                  subsubcategoryId: [subsubcategoryId, [Validators.required]],
-                });
-
+                  this.formGroup = this.fb.group({
+                    name: [this.product.name, [Validators.required, Validators.minLength(2)]],
+                    description: [this.product.description, [Validators.required]],
+                    price: [this.product.price, [Validators.required, Validators.pattern(/^\d+(,\d+)?$/)]],
+                    quantity: [this.product.quantity, [Validators.required, Validators.pattern(/^\d+$/)]],
+                    rozmiar: [this.product.rozmiar, [Validators.required]],
+                    kolor: [this.product.kolor, [Validators.required]],
+                    markaId: [markaId, [Validators.required]],
+                    categoryId: [categoryId, [Validators.required]],
+                    subcategoryId: [subcategoryId, [Validators.required]],
+                    subsubcategoryId: [subsubcategoryId, [Validators.required]],
+                  });
+                }
 
 
               }
@@ -105,8 +113,6 @@ export class ProductEditComponent implements OnInit {
         });
       }
     });
-
-    this.formGroup.controls['markaId'].setValue('sss');
   }
 
 
@@ -115,7 +121,8 @@ export class ProductEditComponent implements OnInit {
     this.markiService.getAll().subscribe({
       next: ((n: TaskResult<Marka[]>) => {
         if (n.success) {
-          this.marki = n.model as Marka[];
+          let data = n.model as Marka[];
+          this.marki = data.sort((a, b) => a.name.localeCompare(b.name));
 
         } else {
           this.snackBarService.setSnackBar(`${n.message}`);
@@ -135,7 +142,8 @@ export class ProductEditComponent implements OnInit {
       next: ((n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
-          this.categories = n.model as Category[];
+          let data = n.model as Category[];
+          this.categories = data.sort((a, b) => a.name.localeCompare(b.name));
 
           if (this.categories.length > 0) {
             this.formGroup.controls['categoryId'].enable();
@@ -157,64 +165,70 @@ export class ProductEditComponent implements OnInit {
 
 
   getAllSubcategories(categoryId: string): void {
-    this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
-      next: ((n: TaskResult<Subcategory[]>) => {
-        if (n.success) {
-          // pobranie danych
-          this.subcategories = n.model as Subcategory[];
+    if (categoryId.length > 0) {
+      this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
+        next: ((n: TaskResult<Subcategory[]>) => {
+          if (n.success) {
+            // pobranie danych
+            let data = n.model as Subcategory[];
+            this.subcategories = data.sort((a, b) => a.name.localeCompare(b.name));
 
 
-          // włącza lub wyłącza kontrolkę subcategoryId
-          if (this.subcategories.length > 0) {
-            this.formGroup.controls['subcategoryId'].enable();
+            // włącza lub wyłącza kontrolkę subcategoryId
+            if (this.subcategories.length > 0) {
+              this.formGroup.controls['subcategoryId'].enable();
+            } else {
+              this.formGroup.controls['subcategoryId'].disable();
+            }
+
+            // włącza lub wyłącza kontrolkę subsubcategoryId
+            if (this.subsubcategories.length > 0) {
+              this.formGroup.controls['subsubcategoryId'].enable();
+            } else {
+              this.formGroup.controls['subsubcategoryId'].disable();
+            }
+
+
           } else {
-            this.formGroup.controls['subcategoryId'].disable();
+            this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
           }
-
-          // włącza lub wyłącza kontrolkę subsubcategoryId
-          if (this.subsubcategories.length > 0) {
-            this.formGroup.controls['subsubcategoryId'].enable();
-          } else {
-            this.formGroup.controls['subsubcategoryId'].disable();
-          }
-
-
-        } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          return n;
+        }),
+        error: (error: Error) => {
+          this.snackBarService.setSnackBar(`${error.message}`);
         }
-        return n;
-      }),
-      error: (error: Error) => {
-        this.snackBarService.setSnackBar(`${error.message}`);
-      }
-    });
+      });
+    }
   }
 
 
   getAllSubsubcategories(categoryId: string, subcategoryId: string): void {
-    this.subsubcategoriesService.getAllByCategoryIdAndSubcategoryId(categoryId, subcategoryId).subscribe({
-      next: ((result: TaskResult<Subsubcategory[]>) => {
-        if (result.success) {
+    if (categoryId.length > 0 && subcategoryId.length > 0) {
+      this.subsubcategoriesService.getAllByCategoryIdAndSubcategoryId(categoryId, subcategoryId).subscribe({
+        next: ((result: TaskResult<Subsubcategory[]>) => {
+          if (result.success) {
 
-          this.subsubcategories = result.model as Subsubcategory[];
+            let data = result.model as Subsubcategory[];
+            this.subsubcategories = data.sort((a, b) => a.name.localeCompare(b.name));
 
-          // włącza lub wyłącza kontrolkę subsubcategoryId
-          if (this.subsubcategories.length > 0) {
-            this.formGroup.controls['subsubcategoryId'].enable();
+            // włącza lub wyłącza kontrolkę subsubcategoryId
+            if (this.subsubcategories.length > 0) {
+              this.formGroup.controls['subsubcategoryId'].enable();
+            } else {
+              this.formGroup.controls['subsubcategoryId'].disable();
+            }
+
+
           } else {
-            this.formGroup.controls['subsubcategoryId'].disable();
+            this.snackBarService.setSnackBar(`${result.message}`);
           }
-
-
-        } else {
-          this.snackBarService.setSnackBar(`${result.message}`);
+          return result;
+        }),
+        error: (error: Error) => {
+          this.snackBarService.setSnackBar(`${error.message}`);
         }
-        return result;
-      }),
-      error: (error: Error) => {
-        this.snackBarService.setSnackBar(`${error.message}`);
-      }
-    });
+      });
+    }
   }
 
 
@@ -226,13 +240,15 @@ export class ProductEditComponent implements OnInit {
 
       // przypisanie wartości począktowych do drugiego comboBoxa 
       this.formGroup.controls['subcategoryId'].setValue('');
+      this.formGroup.controls['subcategoryId'].markAsTouched();
+
 
       // przypisanie wartości począktowych do trzeciego comboBoxa
       this.subsubcategories = [];
       this.formGroup.controls['subsubcategoryId'].setValue('');
     }
   }
-   
+
 
   onSelectionChangeSubcategory(event: MatSelectChange): void {
     let subcategory = this.subcategories.find(f => f.subcategoryId === event.value);
@@ -240,6 +256,7 @@ export class ProductEditComponent implements OnInit {
       this.categoryId = subcategory.categoryId == null ? "" : subcategory.categoryId;
       this.subcategoryId = subcategory.subcategoryId;
       this.getAllSubsubcategories(this.categoryId, this.subcategoryId);
+      this.formGroup.controls['subsubcategoryId'].markAsTouched();
     }
   }
 

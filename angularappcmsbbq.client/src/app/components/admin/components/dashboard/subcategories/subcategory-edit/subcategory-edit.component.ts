@@ -68,15 +68,16 @@ export class SubcategoryEditComponent implements OnInit {
 
 
         this.categoriesService.getAll().subscribe({
-          next: (n: TaskResult<Category[]>) => {
+          next: ((n: TaskResult<Category[]>) => {
             if (n.success) {
               // pobranie danych
-              this.categories = n.model as Category [];
+              let data = n.model as Category[];
+              this.categories = data.sort((a, b) => a.name.localeCompare(b.name));
             } else {
               this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
             }
             return n;
-          },
+          }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubcategoryEditComponent', 'getAll')}. Name: ${error.name}. Message: ${error.message}`);
           }

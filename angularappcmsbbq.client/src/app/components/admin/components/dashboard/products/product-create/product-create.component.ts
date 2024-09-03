@@ -11,7 +11,6 @@ import { Category } from '../../../../../../models/category';
 import { Subcategory } from '../../../../../../models/subcategory';
 import { Subsubcategory } from '../../../../../../models/subsubcategory';
 import { SnackBarService } from '../../../../../../services/snack-bar.service';
-import { map, Observable, startWith } from 'rxjs';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
@@ -54,13 +53,13 @@ export class ProductCreateComponent implements OnInit {
       rozmiar: ['', [Validators.required]],
       kolor: ['', [Validators.required]],
       markaId: ['', [Validators.required]],
-      categoryId: ['', [Validators.required]],
+      categoryId: ['', [Validators.required]], 
       subcategoryId: ['', [Validators.required]],
       subsubcategoryId: ['', [Validators.required]],
     });
 
     this.formGroup.markAllAsTouched();
-
+      
     this.formGroup.controls['subcategoryId'].disable();
     this.formGroup.controls['subsubcategoryId'].disable();
 
@@ -72,7 +71,8 @@ export class ProductCreateComponent implements OnInit {
     this.markiService.getAll().subscribe({
       next: ((n: TaskResult<Marka[]>) => {
         if (n.success) {
-          this.marki = n.model as Marka[];
+          let data = n.model as Marka[];
+          this.marki = data.sort((a, b) => a.name.localeCompare(b.name));
            
         } else {
           this.snackBarService.setSnackBar(`${n.message}`);
@@ -92,7 +92,8 @@ export class ProductCreateComponent implements OnInit {
       next: ((n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
-          this.categories = n.model as Category[];
+          let data = n.model as Category[];
+          this.categories = data.sort((a, b) => a.name.localeCompare(b.name));
 
           if (this.categories.length > 0) {
             this.formGroup.controls['categoryId'].enable();
@@ -113,65 +114,72 @@ export class ProductCreateComponent implements OnInit {
   }
 
 
+
   getAllSubcategories(categoryId: string): void {
-    this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
-      next: ((n: TaskResult<Subcategory[]>) => {
-        if (n.success) {
-          // pobranie danych
-          this.subcategories = n.model as Subcategory[];
+    if (categoryId.length > 0) {
+      this.subcategoriesService.getAllByCategoryId(categoryId).subscribe({
+        next: ((n: TaskResult<Subcategory[]>) => {
+          if (n.success) {
+            // pobranie danych
+            let data = n.model as Subcategory[];
+            this.subcategories = data.sort((a, b) => a.name.localeCompare(b.name));
 
 
-          // włącza lub wyłącza kontrolkę subcategoryId
-          if (this.subcategories.length > 0) {
-            this.formGroup.controls['subcategoryId'].enable();
+            // włącza lub wyłącza kontrolkę subcategoryId
+            if (this.subcategories.length > 0) {
+              this.formGroup.controls['subcategoryId'].enable();
+            } else {
+              this.formGroup.controls['subcategoryId'].disable();
+            }
+
+            // włącza lub wyłącza kontrolkę subsubcategoryId
+            if (this.subsubcategories.length > 0) {
+              this.formGroup.controls['subsubcategoryId'].enable();
+            } else {
+              this.formGroup.controls['subsubcategoryId'].disable();
+            }
+
+
           } else {
-            this.formGroup.controls['subcategoryId'].disable();
+            this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
           }
-
-          // włącza lub wyłącza kontrolkę subsubcategoryId
-          if (this.subsubcategories.length > 0) {
-            this.formGroup.controls['subsubcategoryId'].enable();
-          } else {
-            this.formGroup.controls['subsubcategoryId'].disable();
-          }
-           
-
-        } else {
-          this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+          return n;
+        }),
+        error: (error: Error) => {
+          this.snackBarService.setSnackBar(`${error.message}`);
         }
-        return n;
-      }),
-      error: (error: Error) => {
-        this.snackBarService.setSnackBar(`${error.message}`);
-      }
-    });
+      });
+    }
   }
 
 
-  getAllSubsubcategories(categoryId: string, subcategoryId: string) : void {
-    this.subsubcategoriesService.getAllByCategoryIdAndSubcategoryId(categoryId, subcategoryId).subscribe({
-      next: ((result: TaskResult<Subsubcategory[]>) => {
-        if (result.success) {
+  getAllSubsubcategories(categoryId: string, subcategoryId: string): void {
+    if (categoryId.length > 0 && subcategoryId.length > 0) {
+      this.subsubcategoriesService.getAllByCategoryIdAndSubcategoryId(categoryId, subcategoryId).subscribe({
+        next: ((result: TaskResult<Subsubcategory[]>) => {
+          if (result.success) {
 
-          this.subsubcategories = result.model as Subsubcategory[];
+            let data = result.model as Subsubcategory[];
+            this.subsubcategories = data.sort((a, b) => a.name.localeCompare(b.name));
 
-          // włącza lub wyłącza kontrolkę subsubcategoryId
-          if (this.subsubcategories.length > 0) {
-            this.formGroup.controls['subsubcategoryId'].enable();
+            // włącza lub wyłącza kontrolkę subsubcategoryId
+            if (this.subsubcategories.length > 0) {
+              this.formGroup.controls['subsubcategoryId'].enable();
+            } else {
+              this.formGroup.controls['subsubcategoryId'].disable();
+            }
+
+
           } else {
-            this.formGroup.controls['subsubcategoryId'].disable();
+            this.snackBarService.setSnackBar(`${result.message}`);
           }
-           
-
-        } else {
-          this.snackBarService.setSnackBar(`${result.message}`);
+          return result;
+        }),
+        error: (error: Error) => {
+          this.snackBarService.setSnackBar(`${error.message}`);
         }
-        return result;
-      }),
-      error: (error: Error) => {
-        this.snackBarService.setSnackBar(`${error.message}`);
-      }
-    });
+      });
+    }
   }
 
   

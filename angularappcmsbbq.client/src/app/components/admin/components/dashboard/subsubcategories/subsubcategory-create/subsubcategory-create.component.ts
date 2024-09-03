@@ -58,7 +58,9 @@ export class SubsubcategoryCreateComponent implements OnInit {
       next: (n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
-          this.categories = n.model as Category[]; 
+          let data = (n.model as Category[]);
+          this.categories = data.sort((a, b) => a.name.localeCompare(b.name)); 
+
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
@@ -76,7 +78,9 @@ export class SubsubcategoryCreateComponent implements OnInit {
       next: (n: TaskResult<Subcategory[]>) => {
         if (n.success) {
           // pobranie danych
-          this.subcategories = n.model as Subcategory[]; 
+          let data = n.model as Subcategory[];
+          this.subcategories = data.sort((a, b) => a.name.localeCompare(b.name));
+
           if (this.subcategories.length > 0) {
             this.formGroup.controls['subcategoryId'].enable();
           } else {

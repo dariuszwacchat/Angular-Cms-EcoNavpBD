@@ -23,15 +23,17 @@ export class SubcategoryCreateComponent implements OnInit {
   ngOnInit(): void { 
 
     this.categoriesService.getAll().subscribe({
-      next: (n: TaskResult<Category[]>) => {
+      next: ((n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
           this.categories = n.model as Category[];
+          this.categories = this.categories.sort((a, b) => a.name.localeCompare(b.name));
+
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
         }
         return n;
-      },
+      }),
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`${error.message}`);
       }

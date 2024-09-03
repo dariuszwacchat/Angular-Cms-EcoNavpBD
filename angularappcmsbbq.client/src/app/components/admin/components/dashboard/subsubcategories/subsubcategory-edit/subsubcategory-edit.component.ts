@@ -26,8 +26,8 @@ export class SubsubcategoryEditComponent implements OnInit {
   formGroup!: FormGroup;
   categories: Category[] = [];
   subcategories: Subcategory[] = [];
-  subsubcategory !: Subsubcategory; 
-  subsubcategories: Subsubcategory [] = [];
+  subsubcategory !: Subsubcategory;
+  subsubcategories: Subsubcategory[] = [];
   categoryId: string = '';
   subCategoryDisabled = false;
   isLoading: boolean = false;
@@ -60,12 +60,12 @@ export class SubsubcategoryEditComponent implements OnInit {
             if (n.success) {
               this.subsubcategory = n.model as Subsubcategory;
               if (this.subsubcategory) {
-                 
+
 
                 // załadowanie danych do comboBoxów
                 let categoryId = this.subsubcategory.categoryId == null ? '' : this.subsubcategory.categoryId;
                 let subcategoryId = this.subsubcategory.subcategoryId == null ? '' : this.subsubcategory.subcategoryId;
-                   
+
                 this.getAllCategories();
                 this.getAllSubcategories(categoryId);
 
@@ -76,7 +76,7 @@ export class SubsubcategoryEditComponent implements OnInit {
                   categoryId: [categoryId, [Validators.required]],
                   subcategoryId: [subcategoryId, [Validators.required]]
                 });
-                 
+
 
 
               }
@@ -91,7 +91,7 @@ export class SubsubcategoryEditComponent implements OnInit {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('SubsubcategoryEditComponent', '')}. Name: ${error.name}. Message: ${error.message}`);
           }
         });
-         
+
 
 
       }
@@ -108,7 +108,8 @@ export class SubsubcategoryEditComponent implements OnInit {
       next: (n: TaskResult<Category[]>) => {
         if (n.success) {
           // pobranie danych
-          this.categories = n.model as Category[];
+          let data = n.model as Category[];
+          this.categories = data.sort((a, b) => a.name.localeCompare(b.name)); 
 
           if (this.categories.length > 0) {
             this.formGroup.controls['categoryId'].enable();
@@ -133,22 +134,23 @@ export class SubsubcategoryEditComponent implements OnInit {
       next: (n: TaskResult<Subcategory[]>) => {
         if (n.success) {
           // pobranie danych
-          this.subcategories = n.model as Subcategory[];
-                    
-                    // włącza lub wyłącza kontrolkę subcategoryId
-                     
-                     if (this.subcategories.length > 0) {
-                      this.formGroup.controls['subcategoryId'].enable();
-                    } else {
-                      this.formGroup.controls['subcategoryId'].disable();
-                    }
-          
-                    // włącza lub wyłącza kontrolkę subsubcategoryId
-                    if (this.subsubcategories.length > 0) {
-                      this.formGroup.controls['subsubcategoryId'].enable();
-                    } else {
-                      this.formGroup.controls['subsubcategoryId'].disable();
-                    } 
+          let data = n.model as Subcategory[];
+          this.subcategories = data.sort((a, b) => a.name.localeCompare(b.name)); 
+
+          // włącza lub wyłącza kontrolkę subcategoryId
+
+          if (this.subcategories.length > 0) {
+            this.formGroup.controls['subcategoryId'].enable();
+          } else {
+            this.formGroup.controls['subcategoryId'].disable();
+          }
+
+          // włącza lub wyłącza kontrolkę subsubcategoryId
+          if (this.subsubcategories.length > 0) {
+            this.formGroup.controls['subsubcategoryId'].enable();
+          } else {
+            this.formGroup.controls['subsubcategoryId'].disable();
+          }
 
 
         } else {
@@ -160,7 +162,7 @@ export class SubsubcategoryEditComponent implements OnInit {
         this.snackBarService.setSnackBar(`${error.message}`);
       }
     });
-  } 
+  }
 
 
   onSelectionChangeCategory(event: MatSelectChange): void {
@@ -169,6 +171,6 @@ export class SubsubcategoryEditComponent implements OnInit {
       this.getAllSubcategories(category.categoryId);
     }
   }
-   
+
 
 }
