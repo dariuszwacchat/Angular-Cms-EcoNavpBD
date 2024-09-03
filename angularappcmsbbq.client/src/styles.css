@@ -7,9 +7,10 @@
 html, body {
   margin: 0px;
   padding: 0px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif; 
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: rgb(245,245,245);
 }
-
+ 
 
 a {
   text-decoration: none;
