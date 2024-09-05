@@ -22,7 +22,7 @@
             <div class="mb-20">
                 <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Password</mat-label>
-                    <input matInput formControlName="passwordRegister" />
+                    <input matInput type="password" formControlName="passwordRegister" />
                     <mat-icon matSuffix>password</mat-icon>
                 </mat-form-field>
                 <mat-error *ngIf="formGroup.controls['passwordRegister'].hasError('pattern')" class="matError">

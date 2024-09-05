@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AccountHandlerService } from '../../../../../services/account/account-handler.service';
 import { MarkiHandlerService } from '../../../../../services/marki/marki-handler.service';
@@ -30,13 +30,22 @@ export class MarkiComponent implements OnInit, AfterViewInit {
     this.markiService.initializeDataSource(this.paginator, this.sort);
   }
 
-
-
+   
   openDialogDelete(marka: Marka): void {
     let openRef = this.dialog.open(MarkaDeleteComponent, {
       data: marka
     });
     openRef.afterClosed().subscribe();
+  }
+
+  currentPageIndex: number = 0;
+  pageSize: number = 5;
+  onPageChange(event: PageEvent): void {
+    this.currentPageIndex = event.pageIndex;
+  }
+
+  getIndex(index: number): number {
+    return this.currentPageIndex * this.pageSize + index + 1;
   }
 
 }

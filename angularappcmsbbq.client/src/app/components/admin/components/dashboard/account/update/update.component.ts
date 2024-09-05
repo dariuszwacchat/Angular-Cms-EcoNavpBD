@@ -32,27 +32,21 @@ export class UpdateComponent implements OnInit {
 
   ngOnInit(): void {
 
-
     const sessionModel = sessionStorage.getItem('sessionModel') || '';
     if (sessionModel) {
       let sm = JSON.parse(sessionModel);
       let email = sm.model.email;
 
-      // pobranie zalogowanego użytkownika poprzez email
       this.getUserByEmail(email);
 
-      // pobranie ról i wyświetlenie ich w comboBoxie
+
       this.getAllRoles();
     }
   }
+  
 
-  loadedData !: boolean;
 
-  // Pobiera użytkownika poprzez email
   getUserByEmail(email: string): void {
-
-    // ładowanie danych zanim zostaną wyświetlone
-    this.loadedData = false;
     this.accountService.getUserByEmail(email).subscribe({
       next: ((result: TaskResult<ApplicationUser>) => {
 
@@ -73,8 +67,7 @@ export class UpdateComponent implements OnInit {
             telefon: [this.user.telefon, [Validators.required, Validators.pattern(/^\d+$/)]],
             roleId: [this.user.roleId, [Validators.required]],
           });
-
-          // emaila nie można zmienić
+          
           this.formGroup.controls['email'].disable();
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
@@ -83,14 +76,12 @@ export class UpdateComponent implements OnInit {
         return result;
       }),
       error: (error: Error) => {
-        this.loadedData = true;
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'register')}. Name: ${error.name}. Message: ${error.message}`);
       }
     });
   }
 
-
-  // Wyświetla wszystkie role
+  
   getAllRoles(): void {
     this.roleService.getAll().subscribe({
       next: ((result: TaskResult<ApplicationRole[]>) => {

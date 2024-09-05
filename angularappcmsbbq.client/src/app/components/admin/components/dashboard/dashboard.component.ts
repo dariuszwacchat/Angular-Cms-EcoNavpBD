@@ -8,6 +8,7 @@ import { AccountService } from '../../../../services/account/account.service';
 import { LoginViewModel } from '../../../../models/loginViewModel';
 import { TaskResult } from '../../../../models/taskResult';
 import { InfoService } from '../../../../services/InfoService';
+import { AuthInterceptor } from '../../../../services/account/auth.interceptor';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private snackBarService: SnackBarService,
     public accountService: AccountService,
+    //private authInterceptor: AuthInterceptor
   ) { }
 
 
@@ -56,21 +58,19 @@ export class DashboardComponent implements OnInit {
 
     const sessionModel = sessionStorage.getItem('sessionModel') || '';
     let sm = JSON.parse(sessionModel);
-    this.zalogowanyUserEmail = sm.model.email;
+    //this.zalogowanyUserEmail = sm.model.email;
     this.isLoggedIn = sm.isLoggedIn;
     this.role = sm.role;
 
   }
-
-
+  
   formGroupLogin !: FormGroup;
   formGroupRegister !: FormGroup;
   navigation!: any;
   isSidenavOpen = false;
   password: string = 'SDG%$@5423sdgagSDert';
 
-
-  zalogowanyUserEmail: string | undefined = '';
+  //zalogowanyUserEmail: string | undefined = '';
   role: string = '';
   logowanie: boolean = false;
   isLoggedIn: boolean = false;
@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
     let email = form.controls['emailLogin'].value;
     let password = form.controls['passwordLogin'].value;
 
+
     // Przekazanie obiektu logowania do metody 
     let loginViewModel: LoginViewModel = {
       email: email,
@@ -109,19 +110,26 @@ export class DashboardComponent implements OnInit {
 
         if (result.success) {
 
+          let data = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+
+          // zapisanie w sesji zalogowanego użytkownika
           let sessionModel = {
-            model: result.model,
+            model: result.model as LoginViewModel,
             isLoggedIn: true,
-            role: result.model.role
-          };
-             
+            role: result.model.role,
+            startTime: data
+          };             
           sessionStorage.setItem('sessionModel', JSON.stringify(sessionModel));
 
           this.snackBarService.setSnackBar(`Zalogowany użytkownik: ${result.model.email}`);
-          this.zalogowanyUserEmail = result.model.email;
+          //this.zalogowanyUserEmail = result.model.email;
           this.isLoggedIn = true;
           this.logowanie = false;
           this.role = result.model.role ? result.model.role : "";
+
+
+          //this.authInterceptor.startSessionTimer();
+
           form.reset();
           this.router.navigate(['admin/users']);
         } else {

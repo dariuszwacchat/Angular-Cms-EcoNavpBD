@@ -10,6 +10,8 @@ import { RegisterViewModel } from '../../models/registerViewModel';
 import { GuidGenerator } from '../guid-generator';
 import { InfoService } from '../InfoService';
 import { ChangePasswordViewModel } from '../../models/changePasswordViewModel';
+import { LoginViewModel } from '../../models/loginViewModel';
+import { AuthInterceptor } from './auth.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +21,14 @@ export class AccountHandlerService {
   constructor(
     public accountService: AccountService,
     private router: Router,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
   ) {
   } 
 
   private user!: ApplicationUser;
   public formGroup!: FormGroup;
   public zalogowanyUser!: ApplicationUser;
+  public zalogowanyUserEmail: string | undefined = '';
   public roles !: any;
   public role: string = '';
   public logowanie: boolean = false;
@@ -177,27 +180,68 @@ export class AccountHandlerService {
    
 
 
-  public isLoggedIn: boolean = false;
-  public isLoggedInInterceptor(): boolean {
-    const sessionModel = sessionStorage.getItem('sessionModel');
-    if (sessionModel) {
-      //this.isLoggedIn = true;
-      const sm = JSON.parse(sessionModel); 
 
-      // pobranie pierwszej roli użytkownika 
-      this.role = sm.role;
+  public login(form: FormGroup): void {
+
+    // Pobranie wartości z kontrolek
+    let email = form.controls['emailLogin'].value;
+    let password = form.controls['passwordLogin'].value;
 
 
-      return true;
-    } else {
-      const sessionModel = sessionStorage.getItem('sessionModel') || '';
-      if (sessionModel) {
-        let sm = JSON.parse(sessionModel);
-        sm.isLoggedIn = false;
+    // Przekazanie obiektu logowania do metody 
+    let loginViewModel: LoginViewModel = {
+      email: email,
+      password: password,
+      token: '',
+      role: ''
+    };
+
+    this.logowanie = true;
+    this.accountService.login(loginViewModel).subscribe({
+      next: ((result: TaskResult<LoginViewModel>) => {
+
+        if (result.success) {
+
+          let data = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+
+          // zapisanie w sesji zalogowanego użytkownika
+          let sessionModel = {
+            model: result.model as LoginViewModel,
+            isLoggedIn: true,
+            role: result.model.role,
+            startTime: data
+          };
+          sessionStorage.setItem('sessionModel', JSON.stringify(sessionModel));
+
+          this.snackBarService.setSnackBar(`Zalogowany użytkownik: ${result.model.email}`);
+          //this.zalogowanyUserEmail = result.model.email;
+          this.isLoggedIn = true;
+          this.logowanie = false;
+          this.role = result.model.role ? result.model.role : "";
+
+
+          //this.authInterceptor.startSessionTimer();
+
+          form.reset();
+          this.router.navigate(['admin/users']);
+        } else {
+          this.snackBarService.setSnackBar(`${InfoService.info('Dashboard', 'login')}. ${result.message}.`);
+          sessionStorage.removeItem('sessionModel');
+          this.isLoggedIn = false;
+          this.logowanie = false;
+          form.reset();
+        }
+        return result;
+      }),
+      error: (error: Error) => {
+        this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('Dashboard', 'login')}. Name: ${error.name}. Message: ${error.message}`);
+        sessionStorage.removeItem('sessionModel');
+        this.logowanie = false;
       }
-      return false;
-    }
+    });
   }
+
+
 
   // Metoda odpowiedzialna za wylogowanie
   public wyloguj(): void {
@@ -219,6 +263,30 @@ export class AccountHandlerService {
     });
   }
 
+
+
+
+  public isLoggedIn: boolean = false;
+  public isLoggedInInterceptor(): boolean {
+    const sessionModel = sessionStorage.getItem('sessionModel');
+    if (sessionModel) {
+      //this.isLoggedIn = true;
+      const sm = JSON.parse(sessionModel);
+
+      // pobranie pierwszej roli użytkownika 
+      this.role = sm.role;
+
+
+      return true;
+    } else {
+      const sessionModel = sessionStorage.getItem('sessionModel') || '';
+      if (sessionModel) {
+        let sm = JSON.parse(sessionModel);
+        sm.isLoggedIn = false;
+      }
+      return false;
+    }
+  }
 
 
 

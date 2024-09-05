@@ -41,10 +41,10 @@ export class UserEditComponent implements OnInit {
 
         
         this.usersService.getUserById(id).subscribe({
-          next: ((n: TaskResult<ApplicationUser>) => {
-            if (n.success) {
+          next: ((result: TaskResult<ApplicationUser>) => {
+            if (result.success) {
                
-              this.user = n.model as ApplicationUser;
+              this.user = result.model as ApplicationUser;
               if (this.user) {
                 this.formGroup = this.fb.group({
                   email: [this.user.email, [Validators.required]],
@@ -63,9 +63,9 @@ export class UserEditComponent implements OnInit {
               }
 
             } else {
-              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
             }
-            return n;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UserEditComponent', '')}. Name: ${error.name}. Message: ${error.message}`);
@@ -77,13 +77,13 @@ export class UserEditComponent implements OnInit {
 
         // pobranie ról i wyświetlenie ich w comboBoxie
         this.roleService.getAll().subscribe({
-          next: ((n: TaskResult<ApplicationRole[]>) => {
-            if (n.success) {
-              this.roles = n.model as ApplicationRole[];
+          next: ((result: TaskResult<ApplicationRole[]>) => {
+            if (result.success) {
+              this.roles = result.model as ApplicationRole[];
             } else {
-              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${n.message}`);
+              this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
             }
-            return n;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('UserEditComponent', '')}. Name: ${error.name}. Message: ${error.message}`);

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -66,14 +66,17 @@ import { RoleCreateComponent } from './components/dashboard/roles/role-create/ro
 import { RoleDeleteComponent } from './components/dashboard/roles/role-delete/role-delete.component';
 import { RoleEditComponent } from './components/dashboard/roles/role-edit/role-edit.component';
 import { UsersComponent } from './components/dashboard/users/users.component';
-import { UserCreateComponent } from './components/dashboard/users/user-create/user-create.component';
-import { UserDeleteComponent } from './components/dashboard/users/user-delete/user-delete.component';
-import { UserEditComponent } from './components/dashboard/users/user-edit/user-edit.component';
 import { ChangePasswordComponent } from './components/dashboard/account/change-password/change-password.component';
 import { UpdateComponent } from './components/dashboard/account/update/update.component';
 import { RejestratorLogowaniaComponent } from './components/dashboard/rejestrator-logowania/rejestrator-logowania.component';
 import { RejestratorLogowaniaDeleteComponent } from './components/dashboard/rejestrator-logowania/rejestrator-logowania-delete/rejestrator-logowania-delete.component';
 import { RejestratorLogowaniaEditComponent } from './components/dashboard/rejestrator-logowania/rejestrator-logowania-edit/rejestrator-logowania-edit.component';
+import { UserCreateComponent } from './components/dashboard/users/user-create/user-create.component';
+import { UserDeleteComponent } from './components/dashboard/users/user-delete/user-delete.component';
+import { UserEditComponent } from './components/dashboard/users/user-edit/user-edit.component';
+import { AccountService } from '../../services/account/account.service';
+import { AuthInterceptor } from '../../services/account/auth.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 @NgModule({
@@ -157,6 +160,14 @@ import { RejestratorLogowaniaEditComponent } from './components/dashboard/rejest
     MatNativeDateModule,
     MatAutocompleteModule,
     CdkStepperModule
+  ],
+  providers: [
+    /*AccountService, {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    provideAnimationsAsync(),*/
   ]
 })
 export class AdminModule { }

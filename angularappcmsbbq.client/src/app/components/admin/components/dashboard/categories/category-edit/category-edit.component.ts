@@ -14,6 +14,9 @@ import { SnackBarService } from '../../../../../../services/snack-bar.service';
 })
 export class CategoryEditComponent implements OnInit {
 
+  formGroup!: FormGroup;
+  category !: Category;
+
   constructor(
     private fb: FormBuilder,
     public categoryService: CategoriesService,
@@ -31,10 +34,10 @@ export class CategoryEditComponent implements OnInit {
 
 
         this.categoryService.get(id).subscribe({
-          next: ((s: TaskResult<Category>) => {
-            if (s.success) {
+          next: ((result: TaskResult<Category>) => {
+            if (result.success) {
 
-              this.category = s.model as Category;
+              this.category = result.model as Category;
               if (this.category) {
                 this.formGroup = this.fb.group({
                   name: [this.category.name, [Validators.required, Validators.minLength(3)]],
@@ -43,9 +46,9 @@ export class CategoryEditComponent implements OnInit {
               }
 
             } else {
-              this.snackBarService.setSnackBar(`${s.message}`);
+              this.snackBarService.setSnackBar(`${result.message}`);
             }
-            return s;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`${error.message}`);
@@ -56,9 +59,6 @@ export class CategoryEditComponent implements OnInit {
       }
     });
   }
-
-  formGroup!: FormGroup;
-  category !: Category;
 
 
 }

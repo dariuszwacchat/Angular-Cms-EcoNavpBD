@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { AccountHandlerService } from '../../../../../services/account/account-handler.service';
 import { CategoriesHandlerService } from '../../../../../services/categories/categories-handler.service';
@@ -42,5 +42,16 @@ export class SubcategoriesComponent implements OnInit, AfterViewInit {
     });
     openRef.afterClosed().subscribe();
   }
+
+  currentPageIndex: number = 0;
+  pageSize: number = 5;
+  onPageChange(event: PageEvent): void {
+    this.currentPageIndex = event.pageIndex;
+  }
+
+  getIndex(index: number): number {
+    return this.currentPageIndex * this.pageSize + index + 1;
+  }
+
 
 }

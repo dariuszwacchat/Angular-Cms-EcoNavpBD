@@ -14,6 +14,9 @@ import { SnackBarService } from '../../../../../../services/snack-bar.service';
 })
 export class MarkaEditComponent implements OnInit {
 
+  formGroup!: FormGroup;
+  marka !: Marka;
+
   constructor(
     private fb: FormBuilder,
     private markiService: MarkiService,
@@ -30,20 +33,20 @@ export class MarkaEditComponent implements OnInit {
       if (id) {
         
         this.markiService.get(id).subscribe({
-          next: ((s: TaskResult<Marka>) => {
-            if (s.success) {
+          next: ((result: TaskResult<Marka>) => {
+            if (result.success) {
 
-              this.marka = s.model as Marka;
+              this.marka = result.model as Marka;
               if (this.marka) {
                 this.formGroup = this.fb.group({
-                  name: [this.marka.name, [Validators.required, Validators.minLength(3)]]
+                  name: [this.marka.name, [Validators.required, Validators.minLength(2)]]
                 });
               }
 
             } else {
-              this.snackBarService.setSnackBar(`${s.message}`);
+              this.snackBarService.setSnackBar(`${result.message}`);
             }
-            return s;
+            return result;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`${error.message}`);
@@ -54,8 +57,6 @@ export class MarkaEditComponent implements OnInit {
     });
   }
 
-  formGroup!: FormGroup;
-  marka !: Marka;
 
 
 }
