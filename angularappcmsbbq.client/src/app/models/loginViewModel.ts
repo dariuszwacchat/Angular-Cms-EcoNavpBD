@@ -4,7 +4,4 @@ export interface LoginViewModel {
   password: string;
   token?: string;
   role?: string;
-
-  // mówi o tym, o której godzinie dokładnie użytkonik się zalogował
-  startTime?: string;
 }

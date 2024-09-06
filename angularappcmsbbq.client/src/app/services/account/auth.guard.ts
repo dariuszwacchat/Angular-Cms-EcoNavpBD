@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
 
     const expectedRoles = route.data['expectedRoles'] as Array<string>;
 
-    const sessionModel = sessionStorage.getItem('sessionModel');
+    let sessionModel = sessionStorage.getItem('sessionModel');
     if (sessionModel) {
       let sm = JSON.parse(sessionModel); 
       let role = sm.role;

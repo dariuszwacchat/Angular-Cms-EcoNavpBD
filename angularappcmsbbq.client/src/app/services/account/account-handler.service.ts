@@ -2,7 +2,6 @@ import { Injectable, ViewChild } from '@angular/core';
 import { AccountService } from './account.service';
 import { Router } from '@angular/router';
 import { SnackBarService } from '../snack-bar.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { ApplicationUser } from '../../models/applicationUser';
 import { FormGroup } from '@angular/forms';
 import { TaskResult } from '../../models/taskResult';
@@ -10,8 +9,6 @@ import { RegisterViewModel } from '../../models/registerViewModel';
 import { GuidGenerator } from '../guid-generator';
 import { InfoService } from '../InfoService';
 import { ChangePasswordViewModel } from '../../models/changePasswordViewModel';
-import { LoginViewModel } from '../../models/loginViewModel';
-import { AuthInterceptor } from './auth.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +20,7 @@ export class AccountHandlerService {
     private router: Router,
     private snackBarService: SnackBarService,
   ) {
+    //this.lastActivityTime = Date.now();
   } 
 
   private user!: ApplicationUser;
@@ -35,7 +33,12 @@ export class AccountHandlerService {
   public rejestrowanie: boolean = false;
   public zapisywanie: boolean = false;
 
-    
+/*
+  private lastActivityTime !: number;
+  private time = 10 * 60 * 50; // 1 min
+  //private time = 10 * 60 * 1000; // 10 min
+  private intervalId: any;
+*/
 
   // Pobiera użytkownika poprzez email
   public getUserByEmail(email: string): ApplicationUser {
@@ -180,7 +183,7 @@ export class AccountHandlerService {
    
 
 
-
+/*
   public login(form: FormGroup): void {
 
     // Pobranie wartości z kontrolek
@@ -202,28 +205,36 @@ export class AccountHandlerService {
 
         if (result.success) {
 
-          let data = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
+          // czas po jakim użytkownik ma się wylogować w milisekundach, minuta to 60000 ms, 10 * 60 * 10 = 60000
+          let expirationTime = 60000;
+          let dataZalogowania = new Date();
+          let dataWylogowania = dataZalogowania.setMilliseconds(expirationTime)
 
           // zapisanie w sesji zalogowanego użytkownika
           let sessionModel = {
             model: result.model as LoginViewModel,
             isLoggedIn: true,
             role: result.model.role,
-            startTime: data
+            dataZalogowania: dataZalogowania,
+            dataWylogowania: dataWylogowania,
+            expirationTime: expirationTime,
           };
           sessionStorage.setItem('sessionModel', JSON.stringify(sessionModel));
 
           this.snackBarService.setSnackBar(`Zalogowany użytkownik: ${result.model.email}`);
-          //this.zalogowanyUserEmail = result.model.email;
+          this.zalogowanyUserEmail = result.model.email;
           this.isLoggedIn = true;
           this.logowanie = false;
           this.role = result.model.role ? result.model.role : "";
 
-
-          //this.authInterceptor.startSessionTimer();
-
           form.reset();
-          this.router.navigate(['admin/users']);
+          //this.router.navigate(['../../admin/roles']);
+          //this.router.navigate(['../../admin/roles']);
+          //this.router.navigate(['/../../admin/users']);
+          //this.router.navigate(['web/bbb/a2']);
+          //this.router.navigate(['admin/dashboard']);
+
+
         } else {
           this.snackBarService.setSnackBar(`${InfoService.info('Dashboard', 'login')}. ${result.message}.`);
           sessionStorage.removeItem('sessionModel');
@@ -240,22 +251,25 @@ export class AccountHandlerService {
       }
     });
   }
-
+*/
 
 
   // Metoda odpowiedzialna za wylogowanie
   public wyloguj(): void {
 
-    sessionStorage.removeItem('sessionModel');
-    this.isLoggedIn = false;
-    this.router.navigate(['/']);
+    //sessionStorage.removeItem('sessionModel');
+    //this.isLoggedIn = false;
+    //this.router.navigate(['/']);
 
     this.accountService.logout().subscribe({
       next: () => { 
         // Wyczyszczenie danych z pamięci podręcznej
         sessionStorage.removeItem('sessionModel');
         this.isLoggedIn = false;
-        this.router.navigate(['/']); 
+        //this.clearSessionTimer();
+        //this.router.navigate(['/']);
+        //this.router.navigate(['admin']);
+        this.router.navigate(['admin']).then(() => location.reload());
       },
       error: (error: Error) => {
         this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('AccountHandlerService', 'wyloguj')}. Name: ${error.name}. Message: ${error.message}`);
@@ -264,11 +278,31 @@ export class AccountHandlerService {
   }
 
 
+/*
+  private startSessionTimer(): void {
+    this.clearSessionTimer();
+    this.intervalId = setInterval(() => {
+      if (Date.now() - this.lastActivityTime >= this.time) {
+        this.wyloguj();
+      }
+    }, this.time)
+  }
 
+  private clearSessionTimer() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  }
+
+  public refreshLastActivityTime(): void {
+    this.lastActivityTime = Date.now();
+  }
+*/
 
   public isLoggedIn: boolean = false;
   public isLoggedInInterceptor(): boolean {
-    const sessionModel = sessionStorage.getItem('sessionModel');
+    let sessionModel = sessionStorage.getItem('sessionModel');
     if (sessionModel) {
       //this.isLoggedIn = true;
       const sm = JSON.parse(sessionModel);
@@ -279,7 +313,7 @@ export class AccountHandlerService {
 
       return true;
     } else {
-      const sessionModel = sessionStorage.getItem('sessionModel') || '';
+      let sessionModel = sessionStorage.getItem('sessionModel') || '';
       if (sessionModel) {
         let sm = JSON.parse(sessionModel);
         sm.isLoggedIn = false;
@@ -293,7 +327,7 @@ export class AccountHandlerService {
   public changePassword(form: FormGroup): void {
 
     // pobranie danych użytkownika z sesji
-    const sessionModel = sessionStorage.getItem('sessionModel') || '';
+    let sessionModel = sessionStorage.getItem('sessionModel') || '';
     if (sessionModel) {
       let sm = JSON.parse(sessionModel);
       let email = sm.model.email;

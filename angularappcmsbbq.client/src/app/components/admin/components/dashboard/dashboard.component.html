@@ -96,8 +96,8 @@
 
 <!-- 
                                 <div class="ml-10 mr-10">zalogowany użytkownik: <span class="b">{{ zalogowanyUserEmail }} </span></div>
-
  -->
+
                                 <button mat-icon-button color="primary" [matMenuTriggerFor]="account">
                                     <mat-icon>
                                         settings
@@ -115,11 +115,18 @@
                                         <mat-icon>update</mat-icon>
                                         Zmień hasło
                                     </button>
+                                    
+                                        <button mat-menu-item (click)="accountHandlerService.wyloguj ()">
+                                            <mat-icon>logout</mat-icon>
+                                            wyloguj
+                                        </button>
 
-                                    <button mat-menu-item (click)="accountHandlerService.wyloguj ()">
+<!-- 
+                                    <button mat-menu-item (click)="wyloguj ()">
                                         <mat-icon>logout</mat-icon>
                                         wyloguj
                                     </button>
+ -->
 
                                 </mat-menu>
 
@@ -174,6 +181,17 @@
                     <mat-icon matSuffix>password</mat-icon>
                 </mat-form-field>
 
+                <!-- <div class="pr centerx">
+        <button mat-raised-button
+                color="primary"
+                (click)="accountHandlerService.login(formGroupLogin)"
+                [disabled]="accountHandlerService.asTouchedDirtyLogin (formGroupLogin)">
+            <mat-icon>login</mat-icon>
+            Login
+        </button>
+        <mat-spinner diameter="32" *ngIf="logowanie" class="p"></mat-spinner>
+    </div> -->
+
                 <div class="pr centerx">
                     <button mat-raised-button
                             color="primary"
@@ -184,6 +202,7 @@
                     </button>
                     <mat-spinner diameter="32" *ngIf="logowanie" class="p"></mat-spinner>
                 </div>
+
             </form>
 
         </div>

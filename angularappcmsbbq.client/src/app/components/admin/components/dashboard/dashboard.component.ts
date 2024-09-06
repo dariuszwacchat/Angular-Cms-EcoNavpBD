@@ -8,7 +8,6 @@ import { AccountService } from '../../../../services/account/account.service';
 import { LoginViewModel } from '../../../../models/loginViewModel';
 import { TaskResult } from '../../../../models/taskResult';
 import { InfoService } from '../../../../services/InfoService';
-import { AuthInterceptor } from '../../../../services/account/auth.interceptor';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +16,19 @@ import { AuthInterceptor } from '../../../../services/account/auth.interceptor';
 })
 export class DashboardComponent implements OnInit {
 
+
+  formGroupLogin !: FormGroup;
+  formGroupRegister !: FormGroup;
+  navigation!: any;
+  isSidenavOpen = false;
+  password: string = 'SDG%$@5423sdgagSDert';
+
+  //zalogowanyUserEmail: string | undefined = '';
+  role: string = '';
+  logowanie: boolean = false;
+  isLoggedIn: boolean = false;
+
+
   constructor(
     private fb: FormBuilder,
     public accountHandlerService: AccountHandlerService,
@@ -24,7 +36,6 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private snackBarService: SnackBarService,
     public accountService: AccountService,
-    //private authInterceptor: AuthInterceptor
   ) { }
 
 
@@ -32,8 +43,8 @@ export class DashboardComponent implements OnInit {
 
     // formularz logowania
     this.formGroupLogin = this.fb.group({
-      emailLogin: ['', [Validators.required]],
-      passwordLogin: ['', [Validators.required]]
+      emailLogin: ['admin@admin.pl', [Validators.required]],
+      passwordLogin: ['SDG%$@5423sdgagSDert', [Validators.required]]
     });
 
 
@@ -56,24 +67,13 @@ export class DashboardComponent implements OnInit {
     this.formGroupRegister.markAllAsTouched();
 
 
-    const sessionModel = sessionStorage.getItem('sessionModel') || '';
+    let sessionModel = sessionStorage.getItem('sessionModel') || '';
     let sm = JSON.parse(sessionModel);
     //this.zalogowanyUserEmail = sm.model.email;
     this.isLoggedIn = sm.isLoggedIn;
     this.role = sm.role;
 
   }
-  
-  formGroupLogin !: FormGroup;
-  formGroupRegister !: FormGroup;
-  navigation!: any;
-  isSidenavOpen = false;
-  password: string = 'SDG%$@5423sdgagSDert';
-
-  //zalogowanyUserEmail: string | undefined = '';
-  role: string = '';
-  logowanie: boolean = false;
-  isLoggedIn: boolean = false;
 
 
   toggleSidenav(): void {
@@ -86,8 +86,7 @@ export class DashboardComponent implements OnInit {
     this.linkName = `\\${linkName}`;
   }
    
-   
-
+    
 
   public login(form: FormGroup): void {
 
@@ -110,14 +109,21 @@ export class DashboardComponent implements OnInit {
 
         if (result.success) {
 
-          let data = `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`;
-
+          // czas po jakim użytkownik ma się wylogować w milisekundach, minuta to 60000 ms, 10 * 60 * 10 = 60000
+          // let expirationTime = 10000; // 10 sek
+          // let expirationTime = 60000; // 1 min
+          let expirationTime = 600000; // 10 min
+          let dataZalogowania = new Date();
+          let dataWylogowania = dataZalogowania.setMilliseconds(expirationTime)
+         
           // zapisanie w sesji zalogowanego użytkownika
           let sessionModel = {
             model: result.model as LoginViewModel,
             isLoggedIn: true,
             role: result.model.role,
-            startTime: data
+            dataZalogowania: dataZalogowania,
+            dataWylogowania: dataWylogowania,
+            expirationTime: expirationTime,
           };             
           sessionStorage.setItem('sessionModel', JSON.stringify(sessionModel));
 
@@ -127,11 +133,10 @@ export class DashboardComponent implements OnInit {
           this.logowanie = false;
           this.role = result.model.role ? result.model.role : "";
 
-
-          //this.authInterceptor.startSessionTimer();
-
+          
           form.reset();
-          this.router.navigate(['admin/users']);
+          //this.router.navigate(['admin/users']);
+          this.router.navigate(['admin/users']).then(() => location.reload());
         } else {
           this.snackBarService.setSnackBar(`${InfoService.info('Dashboard', 'login')}. ${result.message}.`);
           sessionStorage.removeItem('sessionModel');
@@ -149,6 +154,25 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+
+
+/*
+  // Metoda odpowiedzialna za wylogowanie
+  public wyloguj(): void {    
+    this.accountService.logout().subscribe({
+      next: () => {
+        // Wyczyszczenie danych z pamięci podręcznej
+        sessionStorage.removeItem('sessionModel');
+        //this.isLoggedIn = false;
+        //this.router.navigate(['admin/users']);
+        this.router.navigate(['admin']).then(() => location.reload());
+      },
+      error: (error: Error) => {
+        this.snackBarService.setSnackBar(`Brak połączenia z bazą danych. ${InfoService.info('DashboardComponent', 'wyloguj')}. Name: ${error.name}. Message: ${error.message}`);
+      }
+    });
+  }
+*/
 
 
 }

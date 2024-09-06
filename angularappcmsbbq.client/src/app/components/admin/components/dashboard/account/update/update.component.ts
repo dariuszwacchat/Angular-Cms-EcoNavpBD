@@ -32,7 +32,7 @@ export class UpdateComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const sessionModel = sessionStorage.getItem('sessionModel') || '';
+    let sessionModel = sessionStorage.getItem('sessionModel') || '';
     if (sessionModel) {
       let sm = JSON.parse(sessionModel);
       let email = sm.model.email;

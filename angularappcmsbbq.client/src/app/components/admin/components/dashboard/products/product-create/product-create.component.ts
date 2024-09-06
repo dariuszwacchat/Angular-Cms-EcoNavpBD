@@ -12,6 +12,7 @@ import { Subcategory } from '../../../../../../models/subcategory';
 import { Subsubcategory } from '../../../../../../models/subsubcategory';
 import { SnackBarService } from '../../../../../../services/snack-bar.service';
 import { MatSelectChange } from '@angular/material/select';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-create',
@@ -35,7 +36,9 @@ export class ProductCreateComponent implements OnInit {
     private subcategoriesService: SubcategoriesService,
     private subsubcategoriesService: SubsubcategoriesService,
     public productsService: ProductsHandlerService,
-    private snackBarService: SnackBarService
+    private snackBarService: SnackBarService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
 
@@ -63,8 +66,16 @@ export class ProductCreateComponent implements OnInit {
     this.formGroup.controls['subcategoryId'].disable();
     this.formGroup.controls['subsubcategoryId'].disable();
 
+
   }
 
+  public tesetButton(): void {
+
+    this.activatedRoute.url.subscribe(a => {
+      alert(this.router.url);
+    });
+
+  }
 
 
   getAllMarki(): void {

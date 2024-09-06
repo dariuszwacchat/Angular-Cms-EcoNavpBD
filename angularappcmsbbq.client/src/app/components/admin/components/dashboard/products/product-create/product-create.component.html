@@ -1,4 +1,5 @@
 
+<button (click)="tesetButton()">test routing</button>
 
 <div class="db w-500px">
 
@@ -131,7 +132,12 @@
             <button mat-raised-button color="warn" mat-dialog-close class="mr-10" [routerLink]="['../../products']">
                 <mat-icon>cancel</mat-icon>
                 Anuluj
-            </button>
+            </button><!-- 
+            <button mat-raised-button color="warn" mat-dialog-close class="mr-10" [routerLink]="['/admin/products']">
+                <mat-icon>cancel</mat-icon>
+                Anuluj
+            </button> -->
+
             <button mat-raised-button
                     color="primary"
                     (click)="productsService.create(formGroup)"

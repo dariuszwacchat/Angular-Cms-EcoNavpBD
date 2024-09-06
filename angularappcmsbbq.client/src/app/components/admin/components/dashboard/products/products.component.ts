@@ -6,6 +6,7 @@ import { ProductsHandlerService } from '../../../../../services/products/product
 import { MatDialog } from '@angular/material/dialog';
 import { Product } from '../../../../../models/product';
 import { ProductDeleteComponent } from './product-delete/product-delete.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -20,7 +21,9 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   constructor(
     public accountService: AccountHandlerService,
     public productsService: ProductsHandlerService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +61,13 @@ export class ProductsComponent implements OnInit, AfterViewInit {
     return this.currentPageIndex * this.pageSize + index + 1;
   }
 
+
+
+  public tesetButton(): void {
+    this.activatedRoute.url.subscribe(a => {
+      alert(this.router.url);
+    });
+  }
 
 
 }

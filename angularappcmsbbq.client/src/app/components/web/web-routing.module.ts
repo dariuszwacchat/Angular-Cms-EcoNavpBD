@@ -7,34 +7,7 @@ import { ContactComponent } from './components/web/contact/contact.component';
 import { CategoryNavDetailsComponent } from './components/web/categories-nav/category-nav-details/category-nav-details.component';
 import { SubcategoryNavDetailsComponent } from './components/web/subcategories-nav/subcategory-nav-details/subcategory-nav-details.component';
 import { SubsubcategoryNavDetailsComponent } from './components/web/subsubcategories-nav/subsubcategory-nav-details/subsubcategory-nav-details.component';
-
-
-/*const routes: Routes = [
-  {
-    path: '',
-    component: WebComponent,
-    children: [
-      {
-        path: 'home',
-        component: HomeComponent
-      },
-      {
-        path: 'products',
-        component: ProductsComponent
-      },
-      {
-        path: 'contact',
-        component: ContactComponent
-      },
-      {
-        path: '', redirectTo: 'home', pathMatch: 'full'
-      },
-      {
-        path: '**', redirectTo: 'home'
-      }
-    ]
-  }
-];*/
+ 
 
 
 const routes: Routes = [
