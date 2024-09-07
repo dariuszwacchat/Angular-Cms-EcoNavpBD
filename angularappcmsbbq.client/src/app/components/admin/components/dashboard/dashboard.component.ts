@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
   isSidenavOpen = false;
   password: string = 'SDG%$@5423sdgagSDert';
 
-  //zalogowanyUserEmail: string | undefined = '';
+  zalogowanyUserEmail: string | undefined = '';
   role: string = '';
   logowanie: boolean = false;
   isLoggedIn: boolean = false;
@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
 
     let sessionModel = sessionStorage.getItem('sessionModel') || '';
     let sm = JSON.parse(sessionModel);
-    //this.zalogowanyUserEmail = sm.model.email;
+    this.zalogowanyUserEmail = sm.model.email;
     this.isLoggedIn = sm.isLoggedIn;
     this.role = sm.role;
 
@@ -114,7 +114,7 @@ export class DashboardComponent implements OnInit {
           // let expirationTime = 60000; // 1 min
           let expirationTime = 600000; // 10 min
           let dataZalogowania = new Date();
-          let dataWylogowania = dataZalogowania.setMilliseconds(expirationTime)
+          let dataWylogowania = dataZalogowania.setMilliseconds(expirationTime);
          
           // zapisanie w sesji zalogowanego użytkownika
           let sessionModel = {
@@ -128,7 +128,7 @@ export class DashboardComponent implements OnInit {
           sessionStorage.setItem('sessionModel', JSON.stringify(sessionModel));
 
           this.snackBarService.setSnackBar(`Zalogowany użytkownik: ${result.model.email}`);
-          //this.zalogowanyUserEmail = result.model.email;
+          this.zalogowanyUserEmail = result.model.email;
           this.isLoggedIn = true;
           this.logowanie = false;
           this.role = result.model.role ? result.model.role : "";

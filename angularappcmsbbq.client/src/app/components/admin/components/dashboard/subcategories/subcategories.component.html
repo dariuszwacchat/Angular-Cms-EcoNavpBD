@@ -24,57 +24,43 @@
 
 
 
+    <table mat-table [dataSource]="subcategoriesService.dataSource" matSort class="mat-elevation-z1 table">
 
-    <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
-    <div *ngIf="subcategoriesService.subcategories.length > 0">
-        <table mat-table [dataSource]="subcategoriesService.dataSource" matSort class="mat-elevation-z1 table">
+        <ng-container matColumnDef="lp">
+            <th mat-header-cell *matHeaderCellDef>Lp</th>
+            <td mat-cell *matCellDef="let element; let i = index" class="w-50px">{{ getIndex(i) }}</td>
+        </ng-container>
 
-            <ng-container matColumnDef="lp">
-                <th mat-header-cell *matHeaderCellDef>Lp</th>
-                <td mat-cell *matCellDef="let element; let i = index" class="w-50px">{{ getIndex(i) }}</td>
-            </ng-container>
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+        </ng-container>
 
-            <ng-container matColumnDef="categoryId">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>categoryId</th>
-                <td mat-cell *matCellDef="let element">{{ element.subcategoryId }}</td>
-            </ng-container>
+        <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Full name</th>
+            <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
+        </ng-container>
 
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-                <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-            </ng-container>
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element" class="w-200px">
 
-            <ng-container matColumnDef="fullName">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Full name</th>
-                <td mat-cell *matCellDef="let element">{{ element.fullName }}</td>
-            </ng-container>
+                <button mat-button [routerLink]="['subcategoryEdit', element.subcategoryId]">
+                    <mat-icon>edit</mat-icon>
+                </button>
 
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let element" class="w-200px">
+                <button mat-button (click)="openDialogDelete (element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
 
-                    <button mat-button [routerLink]="['subcategoryEdit', element.subcategoryId]">
-                        <mat-icon>edit</mat-icon>
-                    </button>
+        <tr mat-header-row *matHeaderRowDef="subcategoriesService.displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: subcategoriesService.displayedColumns"></tr>
+    </table>
 
-                    <button mat-button (click)="openDialogDelete (element)">
-                        <mat-icon>delete</mat-icon>
-                    </button>
-                </td>
-            </ng-container>
+    <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons (page)="onPageChange($event)" style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
 
-            <tr mat-header-row *matHeaderRowDef="subcategoriesService.displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: subcategoriesService.displayedColumns"></tr>
-        </table>
-
-        <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons (page)="onPageChange($event)" style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
-
-    </div>
-    <div *ngIf="subcategoriesService.subcategories.length == 0">
-        <h4>
-            Kliknij 'Create new', aby dodać pierwszą pozycję.
-        </h4>
-    </div>
 
 
 </ng-container>

@@ -60,14 +60,6 @@ export class ProductsComponent implements OnInit, AfterViewInit {
   getIndex(index: number): number {
     return this.currentPageIndex * this.pageSize + index + 1;
   }
-
-
-
-  public tesetButton(): void {
-    this.activatedRoute.url.subscribe(a => {
-      alert(this.router.url);
-    });
-  }
-
+  
 
 }

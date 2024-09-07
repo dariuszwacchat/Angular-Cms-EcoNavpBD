@@ -1,5 +1,3 @@
-
-
 <!-- dane wyświetlana tylko i wyłącznie dla administratora -->
 <ng-container *ngIf="accountService.role == 'Administrator'">
 
@@ -25,9 +23,8 @@
 
 
 
-
     <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
-    <div *ngIf="usersService.users.length > 0">
+    <!-- <div *ngIf="usersService.users.length > 0"> -->
         <table mat-table [dataSource]="usersService.dataSource" matSort class="mat-elevation-z1 table">
 
             <ng-container matColumnDef="lp">
@@ -85,14 +82,14 @@
         </table>
 
         <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons (page)="onPageChange($event)" style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
-
+<!-- 
     </div>
-    <div *ngIf="usersService.users.length == 0">
+ -->
+    <!-- <div *ngIf="usersService.users.length == 0">
         <h4>
             Kliknij 'Create new', aby dodać pierwszą pozycję.
         </h4>
-    </div>
-
+    </div> -->
 
 
 </ng-container>

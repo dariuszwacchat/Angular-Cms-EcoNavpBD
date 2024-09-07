@@ -4,7 +4,7 @@
 <div class="pr w-500px">
 
     <mat-spinner diameter="32" *ngIf="user == null" class="mt-20"></mat-spinner>
-     
+
     <div *ngIf="user">
         <p class="header">
             Edytowanie istniejącej pozycji
@@ -107,12 +107,12 @@
 
 
         <div class="df-sb bottom-buttons" style="margin-bottom: 100px;">
-            <button mat-raised-button color="warn" mat-dialog-close routerLink="/users">
+            <button mat-raised-button color="warn" mat-dialog-close [routerLink]="['/admin']">
                 Wstecz
             </button>
 
             <div>
-                <button mat-raised-button color="warn" mat-dialog-close class="mr-10" routerLink="/users">
+                <button mat-raised-button color="warn" mat-dialog-close class="mr-10" [routerLink]="['/admin']">
                     <mat-icon>cancel</mat-icon>
                     Anuluj
                 </button>
