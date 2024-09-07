@@ -50,7 +50,7 @@ export class RolesHandlerService {
       next: ((result: TaskResult<ApplicationRole[]>) => {
         if (result.success) {
           // pobranie danych
-          this.dataSource.data = result.model;
+          this.dataSource.data = result.model as ApplicationRole[];
           this.roles = result.model;
 
           result.model.forEach((f: ApplicationRole) => {

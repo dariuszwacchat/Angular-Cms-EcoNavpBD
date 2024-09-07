@@ -54,8 +54,8 @@ export class SubcategoriesHandlerService {
       next: ((result: TaskResult<Subcategory[]>) => {
         if (result.success) {
           // pobranie danych
-          this.subcategories = result.model;
-          this.dataSource.data = result.model;
+          this.subcategories = result.model as Subcategory[];
+          this.dataSource.data = result.model as Subcategory[];
           this.loadingElements = false;
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);

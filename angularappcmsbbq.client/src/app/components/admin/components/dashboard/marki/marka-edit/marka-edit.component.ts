@@ -33,20 +33,20 @@ export class MarkaEditComponent implements OnInit {
       if (id) {
         
         this.markiService.get(id).subscribe({
-          next: ((result: TaskResult<Marka>) => {
-            if (result.success) {
+          next: ((s: TaskResult<Marka>) => {
+            if (s.success) {
 
-              this.marka = result.model as Marka;
+              this.marka = s.model as Marka;
               if (this.marka) {
                 this.formGroup = this.fb.group({
-                  name: [this.marka.name, [Validators.required, Validators.minLength(2)]]
+                  name: [this.marka.name, [Validators.required, Validators.minLength(3)]]
                 });
               }
 
             } else {
-              this.snackBarService.setSnackBar(`${result.message}`);
+              this.snackBarService.setSnackBar(`${s.message}`);
             }
-            return result;
+            return s;
           }),
           error: (error: Error) => {
             this.snackBarService.setSnackBar(`${error.message}`);
@@ -56,7 +56,6 @@ export class MarkaEditComponent implements OnInit {
       }
     });
   }
-
 
 
 }

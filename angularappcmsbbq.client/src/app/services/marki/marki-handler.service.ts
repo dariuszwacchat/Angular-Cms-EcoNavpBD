@@ -51,7 +51,7 @@ export class MarkiHandlerService {
         if (result.success) {
           // pobranie danych
           this.marki = result.model;
-          this.dataSource.data = result.model;
+          this.dataSource.data = result.model as Marka [];
           this.loadingElements = false;
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);

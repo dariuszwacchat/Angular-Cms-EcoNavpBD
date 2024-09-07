@@ -16,7 +16,7 @@ export class MarkaCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]]
+      name: ['', [Validators.required, Validators.minLength(3)]]
     });
 
     this.formGroup.markAllAsTouched();

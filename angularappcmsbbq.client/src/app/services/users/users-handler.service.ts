@@ -42,10 +42,12 @@ export class UsersHandlerService {
     this.getAll();
   }
 
+  showMessage: boolean = false;
 
   // Pobiera wszystkich użytkowników z bazy
   public getAll(): void {
     this.loadingElements = true;
+    this.showMessage = this.loadingElements && this.dataSource.data.length > 0;
     this.usersService.getAll().subscribe({
       next: ((result: TaskResult<ApplicationUser[]>) => {
         if (result.success) {

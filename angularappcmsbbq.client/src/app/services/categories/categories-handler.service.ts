@@ -50,8 +50,8 @@ export class CategoriesHandlerService {
       next: ((result: TaskResult<Category[]>) => {
         if (result.success) {
           // pobranie danych
-          this.categories = result.model;
-          this.dataSource.data = result.model;
+          this.categories = result.model as Category[];
+          this.dataSource.data = result.model as Category[];
           this.loadingElements = false;
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);

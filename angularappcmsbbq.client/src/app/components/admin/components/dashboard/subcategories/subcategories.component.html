@@ -62,6 +62,12 @@
     <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons (page)="onPageChange($event)" style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
 
 
+    <div *ngIf="categoriesService.dataSource.filteredData.length <= 0">
+        <h4>
+            Nie znaleziono żadnych pozycji
+        </h4>
+    </div>
+
 
 </ng-container>
 

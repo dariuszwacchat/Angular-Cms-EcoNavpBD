@@ -43,15 +43,17 @@ export class SubsubcategoriesHandlerService {
     this.getAll();
   }
 
+  showMessage: boolean = false;
 
   public getAll(): void {
     this.loadingElements = true;
+    this.showMessage = this.loadingElements && this.dataSource.data.length > 0;
     this.subsubcategoriesService.getAll().subscribe({
       next: ((result: TaskResult<Subsubcategory[]>) => {
         if (result.success) {
           // pobranie danych
-          this.dataSource.data = result.model;
-          this.subsubcategories = result.model;
+          this.dataSource.data = result.model as Subsubcategory[];
+          this.subsubcategories = result.model as Subsubcategory[];
           this.loadingElements = false;
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);

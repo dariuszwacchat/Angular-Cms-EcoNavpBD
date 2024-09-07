@@ -25,10 +25,7 @@
 
 
 
-
-    <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
-    <!-- <div *ngIf="productsService.products.length > 0"> -->
-
+    <div *ngIf="productsService.dataSource.filteredData.length > 0">
         <table mat-table [dataSource]="productsService.dataSource" matSort class="mat-elevation-z1 table">
 
             <ng-container matColumnDef="lp">
@@ -90,8 +87,17 @@
         </table>
 
         <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons (page)="onPageChange($event)" style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
-<!-- 
-    </div> -->
+
+    </div>
+
+
+    <div *ngIf="productsService.dataSource.filteredData.length <= 0">
+        <h4>
+            Nie znaleziono żadnych pozycji
+        </h4>
+    </div>
+
+
 
 
 </ng-container>

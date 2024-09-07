@@ -48,9 +48,9 @@ export class RejestratorLogowaniaHandlerService {
     this.rejestratorLogowaniaService.getAll().subscribe({
       next: ((result: TaskResult<RejestratorLogowania[]>) => {
         if (result.success) {
-          // pobranie danych
+          // pobranie danych 
           this.dataSource.data = result.model as RejestratorLogowania[];
-          this.rejestratorLogowan = result.model as RejestratorLogowania [];
+          this.rejestratorLogowan = result.model as RejestratorLogowania[];
           this.loadingElements = false;
         } else {
           this.snackBarService.setSnackBar(`Dane nie zostały załadowane. ${result.message}`);
@@ -87,7 +87,7 @@ export class RejestratorLogowaniaHandlerService {
     });
   }
 
-   
+
 
 
   public edit(id: string, form: FormGroup): void {
@@ -148,7 +148,6 @@ export class RejestratorLogowaniaHandlerService {
 
 
 
-
   public searchFilter(event: Event) {
     this.loadingElements = true;
     const filterValue = (event.target as HTMLInputElement).value;
@@ -162,7 +161,7 @@ export class RejestratorLogowaniaHandlerService {
 
 
 
- 
+
 
 
   /*public isValidCreate(form: FormGroup): boolean {

@@ -22,9 +22,15 @@
     </div>
 
 
+    <!--
+        <div *ngIf="usersService.dataSource.data.length > 0 && usersService.loadingElements" class="centerx mt-100">
+            <mat-spinner diameter="32" *ngIf="usersService.dataSource.data.length > 0 && usersService.loadingElements" class="spinner"></mat-spinner>
+        </div>
 
+
+        <div *ngIf="usersService.dataSource.data.length > 0"> -->
     <!-- jeżeli jest większa ilość obiektów wyświetl tabelę -->
-    <!-- <div *ngIf="usersService.users.length > 0"> -->
+    <div *ngIf="usersService.dataSource.filteredData.length > 0">
         <table mat-table [dataSource]="usersService.dataSource" matSort class="mat-elevation-z1 table">
 
             <ng-container matColumnDef="lp">
@@ -82,14 +88,14 @@
         </table>
 
         <mat-paginator [pageSizeOptions]="[5,10,20,30]" showFirstLastButtons (page)="onPageChange($event)" style="margin: 20px 0px; background-color: transparent;"></mat-paginator>
-<!-- 
+
     </div>
- -->
-    <!-- <div *ngIf="usersService.users.length == 0">
+
+    <div *ngIf="usersService.dataSource.filteredData.length <= 0">
         <h4>
-            Kliknij 'Create new', aby dodać pierwszą pozycję.
+            Nie znaleziono żadnych pozycji
         </h4>
-    </div> -->
+    </div>
 
 
 </ng-container>
